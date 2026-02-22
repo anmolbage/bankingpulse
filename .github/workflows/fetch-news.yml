@@ -95,9 +95,13 @@ jobs:
             console.log('[fetch-news] Direct parse failed, attempting repair...');
             try {
               // Find the opening brace and try to fix common issues
-              const start = txt.indexOf('{"morningBrief"');
+              const start = txt.indexOf('"morningBrief"');
               if (start === -1) throw new Error('Cannot find JSON start');
-              let jsonStr = txt.substring(start);
+              let jsonStr = txt.substring(start - 1);
+              // Make sure we start with {
+              const bracePos = jsonStr.lastIndexOf('{', 5);
+              if (bracePos >= 0) jsonStr = jsonStr.substring(bracePos);
+              else jsonStr = '{' + jsonStr;
               // Fix truncated JSON: ensure proper closing
               let braces = 0, lastValid = 0;
               for (let i = 0; i < jsonStr.length; i++) {
