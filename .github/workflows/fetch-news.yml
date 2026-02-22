@@ -83,11 +83,55 @@ jobs:
           }
 
           txt = txt.replace(/\`\`\`json\s*/g, '').replace(/\`\`\`\s*/g, '').trim();
-          const match = txt.match(/\{[\s\S]*"news"[\s\S]*\}/);
-          if (!match) throw new Error('Could not parse response');
-
-          const parsed = JSON.parse(match[0]);
-          if (!parsed.news || !Array.isArray(parsed.news)) throw new Error('Invalid format');
+          
+          // Robust JSON extraction and repair
+          let parsed;
+          try {
+            // Try direct parse first
+            const match = txt.match(/\{[\s\S]*"news"[\s\S]*\}/);
+            if (!match) throw new Error('No JSON found');
+            parsed = JSON.parse(match[0]);
+          } catch(e1) {
+            console.log('[fetch-news] Direct parse failed, attempting repair...');
+            try {
+              // Find the opening brace and try to fix common issues
+              const start = txt.indexOf('{"morningBrief"');
+              if (start === -1) throw new Error('Cannot find JSON start');
+              let jsonStr = txt.substring(start);
+              // Fix truncated JSON: ensure proper closing
+              let braces = 0, lastValid = 0;
+              for (let i = 0; i < jsonStr.length; i++) {
+                if (jsonStr[i] === '{') braces++;
+                if (jsonStr[i] === '}') { braces--; if (braces === 0) { lastValid = i; break; } }
+              }
+              if (lastValid > 0) jsonStr = jsonStr.substring(0, lastValid + 1);
+              else {
+                // Force close: remove trailing incomplete items
+                jsonStr = jsonStr.replace(/,\s*\{[^}]*$/, '');  // remove last incomplete object
+                jsonStr = jsonStr.replace(/,\s*"[^"]*$/, '');    // remove last incomplete string
+                // Close any open arrays and objects
+                const openBrackets = (jsonStr.match(/\[/g)||[]).length - (jsonStr.match(/\]/g)||[]).length;
+                const openBraces = (jsonStr.match(/\{/g)||[]).length - (jsonStr.match(/\}/g)||[]).length;
+                jsonStr += ']'.repeat(Math.max(0, openBrackets));
+                jsonStr += '}'.repeat(Math.max(0, openBraces));
+              }
+              // Fix common JSON issues
+              jsonStr = jsonStr.replace(/,\s*([}\]])/g, '$1'); // trailing commas
+              jsonStr = jsonStr.replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":'); // unquoted keys
+              parsed = JSON.parse(jsonStr);
+            } catch(e2) {
+              console.error('[fetch-news] JSON repair failed:', e2.message);
+              console.error('[fetch-news] Raw text (first 1000 chars):', txt.substring(0, 1000));
+              process.exit(1);
+            }
+          }
+          
+          if (!parsed.news || !Array.isArray(parsed.news)) {
+            console.error('[fetch-news] Invalid format - no news array');
+            process.exit(1);
+          }
+          
+          console.log('[fetch-news] Parsed ' + parsed.news.length + ' news items');
 
           const clean = (t) => {
             if (!t) return '';
@@ -156,4 +200,3 @@ jobs:
           SCRIPT
 
           node --experimental-vm-modules fetch.mjs
-
