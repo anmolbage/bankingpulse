@@ -36,49 +36,49 @@ jobs:
           - Hindi should be natural spoken Hindi, not textbook: "ये आपके काम पर सीधा असर डालेगा" not "यह बैंकिंग क्षेत्र को प्रभावित करेगा"
 
           VOICE GUIDE FOR SUMMARIES:
-          The summary should be 3-4 lines (not 2), lead with the key takeaway, use "you/your" language, and include at least one concrete implication for a branch manager at a Regional Rural Bank.
-          BAD (news wire): "RBI maintained repo rate at 5.25% with neutral stance while bank MCLR rates dropped to 8.4% in January 2026. Fresh loan rates fell to 8.28% in December, making credit cheaper for borrowers."
-          GOOD (sharp colleague): "RBI held the repo rate at 5.25% — no surprise there. But here's what matters: banks are cutting MCLR anyway, down to 8.4%. Your borrowers are about to get cheaper loans whether RBI moves or not."
-          BAD: "The government has announced an increase in the agricultural credit target to ₹25 lakh crore for FY27."
-          GOOD: "Big one for KCC portfolios — agri credit target just jumped to ₹25 lakh crore for FY27. If your branch has been slow on KCC sanctions, now's the time to push."
+          Summary: 2-3 lines max. Lead with the key takeaway, use "you/your" language.
+          GOOD: "RBI held repo at 5.25%. But banks are cutting MCLR anyway — your borrowers get cheaper loans."
+          GOOD: "Agri credit target jumped to ₹25L cr for FY27. Push KCC sanctions now."
 
           MORNING BRIEF FORMAT:
-          Format the morningBrief as an HTML string with clear sections:
-          - Opening hook (1 line, bold): "<b>Big week — here's what you need to know before the morning meeting.</b>"
-          - Then 4-6 bullet points in a <ul>, each one story/development in 1-2 punchy lines
-          - Each bullet should start with a bold keyword/topic: "<li><b>Repo Rate:</b> Held at 5.25%, but MCLR cuts mean cheaper loans for your borrowers.</li>"
-          - End with a closing line after the list
-          The morningBriefHi should follow the same HTML structure but in natural spoken Hindi.
+          Format the morningBrief as an HTML string — keep it SHORT:
+          - Opening hook (1 line, bold): "<b>Big week — here's what you need to know.</b>"
+          - Then 3-4 bullet points in a <ul>, each one story in 1 punchy line
+          - Each bullet starts with a bold topic: "<li><b>Repo Rate:</b> Held at 5.25%.</li>"
+          - End with a short closing line (max 10 words)
+          The morningBriefHi should follow the same HTML structure but in natural spoken Hindi. Keep morningBrief under 400 characters and morningBriefHi under 500 characters.
 
-          Return 12-18 news items + 3-5 circulars.
+          Return 8-10 news items + 2-3 circulars. KEEP TOTAL RESPONSE SHORT — under 12000 characters of JSON.
           Categories: rbi, banking, msme, digital, rrb, markets, budget, nabard
           Importance: "must-read" (will change your branch operations), "good-to-know" (useful context), "fyi" (interesting but won't change your day)
           Badges: LATEST, BREAKING, ACTION NEEDED, GAME CHANGER, NEW, UPDATE, IMPORTANT, POLICY
           keyNumbers: Include 2-4 key numbers per story (rate, amount, date, count)
 
-          TREND DATA:
-          For 2-3 stories with rate/number changes across time, add a trendData object:
-          If you can find 4+ data points over a meaningful time period (3+ months), return:
-          {"trendData":{"metric":"MCLR Rate","points":[{"date":"Oct 25","value":8.71},{"date":"Nov 25","value":8.55},{"date":"Dec 25","value":8.28},{"date":"Jan 26","value":8.4}],"direction":"down","summary":"down 31 bps since Oct"}}
-          If you cannot find 4+ reliable data points, return summary-only:
-          {"trendData":{"metric":"MCLR Rate","points":[],"direction":"down","summary":"down 31 bps since Oct"}}
-          NEVER return {"label":"","value":""} format — always use the trendData object format above.
+          TREND DATA (REQUIRED for at least 2 stories):
+          You MUST include trendData for at least 2 news items that involve rates, amounts, or counts changing over time.
+          Even if you only have a direction and summary (no exact data points), ALWAYS include the trendData object:
+          {"trendData":{"metric":"Repo Rate","points":[],"direction":"down","summary":"cut 25 bps to 6.25%"}}
+          If you can find 4+ data points: {"trendData":{"metric":"MCLR Rate","points":[{"date":"Oct 25","value":8.71},{"date":"Nov 25","value":8.55},{"date":"Dec 25","value":8.28},{"date":"Jan 26","value":8.4}],"direction":"down","summary":"down 31 bps since Oct"}}
 
-          DEEP DIVE:
-          For each story, generate a "deepDive" field (string, HTML allowed) containing a 4-6 paragraph detailed explanation written like a knowledgeable colleague explaining over chai. Include:
-          - What exactly happened and who announced it
-          - Which specific banks/institutions are affected
-          - Historical context (what was the rate/rule before?)
-          - What this means for YOUR branch specifically — be concrete: "check if your MCLR-linked loans have been repriced", "expect more KCC applications this quarter"
-          - Any deadlines or dates to watch
-          - Related circulars if applicable
-          Voice: Conversational, specific, practical. Not a textbook. Use "you/your" frequently. Explain jargon in parentheses.
-          Wrap paragraphs in <p> tags and use <b> for key terms. Also generate "deepDiveHi" in natural spoken Hindi with the same HTML structure.
+          DEEP DIVE (REQUIRED for first 2 must-read stories):
+          You MUST include a "deepDive" field for the first 2 stories with importance "must-read". This is not optional.
+          Format: ONE short paragraph, 3-4 sentences, wrapped in <p> tag. Cover what happened + one concrete action.
+          Example: "<p>RBI cut repo by 25 bps to 6.25%, first cut since 2020. Your MCLR-linked loans should reprice within the cycle. Check with HO if your branch's lending rates have been updated — borrowers will start asking.</p>"
+          Also include "deepDiveHi" in Hindi with same structure.
+          For all other stories, omit deepDive/deepDiveHi.
 
-          RESPOND IN VALID JSON ONLY:
-          {"morningBrief":"<b>Hook line.</b><ul><li><b>Topic:</b> Detail.</li></ul>Bottom line.","morningBriefHi":"...","news":[{"id":"n1","category":"rbi","badge":"LATEST","importance":"must-read","title":"...","titleHi":"...","summary":"...","summaryHi":"...","whyItMatters":"...","whyItMattersHi":"...","deepDive":"<p>Detailed explanation...</p>","deepDiveHi":"<p>...</p>","keyNumbers":[{"label":"...","value":"..."}],"trendData":{"metric":"...","points":[{"date":"...","value":0}],"direction":"up|down|neutral","summary":"..."},"sources":[{"name":"...","url":"..."}],"date":"2026-02-22"}],"circulars":[{"id":"c1","issuer":"RBI","number":"...","date":"...","title":"...","titleHi":"...","summary":"...","summaryHi":"...","deadline":"...","actions":["Check if your branch...","Update your..."],"actionsHi":["..."],"url":"https://..."}]}
+          RESPOND IN VALID JSON ONLY. Structure:
+          {"morningBrief":"...","morningBriefHi":"...","news":[{...}],"circulars":[{...}]}
+          News fields: id, category, badge, importance, title, titleHi, summary, summaryHi, whyItMatters, whyItMattersHi, keyNumbers[{label,value}], trendData (optional), sources[{name,url}], date, deepDive (optional), deepDiveHi (optional)
+          Circular fields: id, issuer, number, date, title, titleHi, summary, summaryHi, deadline, actions[], actionsHi[], url
 
-          CRITICAL: NO cite tags, NO [1] references. HTML is allowed ONLY in morningBrief, morningBriefHi, deepDive, and deepDiveHi fields. All other text fields must be clean plain text. Real source URLs. 12-18 news + 3-5 circulars.`;
+          CRITICAL RULES:
+          - NO cite tags, NO [1] references
+          - HTML allowed ONLY in morningBrief, morningBriefHi, deepDive, deepDiveHi
+          - 8-10 news + 2-3 circulars. BE CONCISE.
+          - MUST include deepDive + deepDiveHi for first 2 must-read news items
+          - MUST include trendData for at least 2 news items (even if points array is empty, include direction + summary)
+          - Summaries must sound like a colleague talking, NOT a news wire. Use "you/your" and be specific about branch impact.`;
 
           console.log('[fetch-news] Calling Claude API...');
 
@@ -91,12 +91,12 @@ jobs:
             },
             body: JSON.stringify({
               model: 'claude-sonnet-4-20250514',
-              max_tokens: 16000,
+              max_tokens: 40000,
               system: sysPrompt,
-              tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+              tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
               messages: [{
                 role: 'user',
-                content: 'Search for latest Indian banking news + recent RBI/NABARD/DFS circulars. Include Hindi translations and trend data. 10-15 news + 3-5 circulars. Clean JSON only.'
+                content: 'Search for latest Indian banking news + recent RBI/NABARD/DFS circulars. Include Hindi translations and trend data. 8-10 news + 2-3 circulars. Keep summaries short (2-3 lines). Deep dives only for top 2 must-reads (1 paragraph each). Total JSON must be under 12000 characters. Clean JSON only — no extra text before or after.'
               }],
             }),
           });
@@ -109,6 +109,10 @@ jobs:
           console.log('[fetch-news] Parsing response...');
 
           const data = await resp.json();
+          console.log('[fetch-news] Stop reason:', data.stop_reason, '| Output tokens:', data.usage?.output_tokens);
+          if (data.stop_reason === 'max_tokens') {
+            console.warn('[fetch-news] WARNING: Response was truncated (hit max_tokens). Will attempt repair.');
+          }
           let txt = '';
           for (const b of data.content) {
             if (b.type === 'text') txt += b.text;
@@ -116,7 +120,7 @@ jobs:
 
           txt = txt.replace(/\`\`\`json\s*/g, '').replace(/\`\`\`\s*/g, '').trim();
           
-          // Robust JSON extraction and repair
+          // Robust JSON extraction and repair (string-aware to handle HTML in values)
           let parsed;
           try {
             // Try direct parse first
@@ -126,34 +130,60 @@ jobs:
           } catch(e1) {
             console.log('[fetch-news] Direct parse failed, attempting repair...');
             try {
-              // Find the opening brace and try to fix common issues
+              // Find the JSON start
               const start = txt.indexOf('"morningBrief"');
               if (start === -1) throw new Error('Cannot find JSON start');
               let jsonStr = txt.substring(start - 1);
-              // Make sure we start with {
               const bracePos = jsonStr.lastIndexOf('{', 5);
               if (bracePos >= 0) jsonStr = jsonStr.substring(bracePos);
               else jsonStr = '{' + jsonStr;
-              // Fix truncated JSON: ensure proper closing
-              let braces = 0, lastValid = 0;
+
+              // String-aware brace counting (skip content inside quoted strings)
+              let depth = 0, lastValid = 0, inStr = false, escape = false;
               for (let i = 0; i < jsonStr.length; i++) {
-                if (jsonStr[i] === '{') braces++;
-                if (jsonStr[i] === '}') { braces--; if (braces === 0) { lastValid = i; break; } }
+                const ch = jsonStr[i];
+                if (escape) { escape = false; continue; }
+                if (ch === '\\') { escape = true; continue; }
+                if (ch === '"') { inStr = !inStr; continue; }
+                if (inStr) continue;
+                if (ch === '{' || ch === '[') depth++;
+                if (ch === '}' || ch === ']') { depth--; if (depth === 0) { lastValid = i; break; } }
               }
-              if (lastValid > 0) jsonStr = jsonStr.substring(0, lastValid + 1);
-              else {
-                // Force close: remove trailing incomplete items
-                jsonStr = jsonStr.replace(/,\s*\{[^}]*$/, '');  // remove last incomplete object
-                jsonStr = jsonStr.replace(/,\s*"[^"]*$/, '');    // remove last incomplete string
-                // Close any open arrays and objects
-                const openBrackets = (jsonStr.match(/\[/g)||[]).length - (jsonStr.match(/\]/g)||[]).length;
-                const openBraces = (jsonStr.match(/\{/g)||[]).length - (jsonStr.match(/\}/g)||[]).length;
-                jsonStr += ']'.repeat(Math.max(0, openBrackets));
-                jsonStr += '}'.repeat(Math.max(0, openBraces));
+
+              if (lastValid > 0) {
+                jsonStr = jsonStr.substring(0, lastValid + 1);
+              } else {
+                // Truncated mid-string or mid-object — repair
+                console.log('[fetch-news] JSON truncated, attempting string-aware repair...');
+                // If we're inside a string, close it
+                if (inStr) {
+                  // Remove the partial string value and its key
+                  jsonStr = jsonStr.replace(/,?\s*"[^"]*":\s*"[^"]*$/, '');
+                  // If still broken, just truncate to last complete key-value
+                  if (jsonStr.endsWith('"')) jsonStr += '""';
+                }
+                // Remove trailing incomplete objects/arrays
+                jsonStr = jsonStr.replace(/,\s*\{[^{}]*$/, '');
+                jsonStr = jsonStr.replace(/,\s*"[^"]*$/, '');
+                // Re-count depth (string-aware) and close
+                depth = 0; inStr = false; escape = false;
+                const stack = [];
+                for (let i = 0; i < jsonStr.length; i++) {
+                  const ch = jsonStr[i];
+                  if (escape) { escape = false; continue; }
+                  if (ch === '\\') { escape = true; continue; }
+                  if (ch === '"') { inStr = !inStr; continue; }
+                  if (inStr) continue;
+                  if (ch === '{') stack.push('}');
+                  if (ch === '[') stack.push(']');
+                  if (ch === '}' || ch === ']') stack.pop();
+                }
+                // Close any remaining open brackets/braces
+                jsonStr = jsonStr.replace(/,\s*$/, '');
+                jsonStr += stack.reverse().join('');
               }
               // Fix common JSON issues
               jsonStr = jsonStr.replace(/,\s*([}\]])/g, '$1'); // trailing commas
-              jsonStr = jsonStr.replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":'); // unquoted keys
               parsed = JSON.parse(jsonStr);
             } catch(e2) {
               console.error('[fetch-news] JSON repair failed:', e2.message);
