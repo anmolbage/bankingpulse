@@ -128,6 +128,38 @@ body.hindi .nc-summary,body.hindi .nc-ins p{font-family:'Tiro Devanagari Hindi',
 .tr-bar .bv{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--ink)}
 .tr-bar .bl{font-size:8.5px;color:var(--muted);margin-top:1px;white-space:nowrap}
 
+/* DEEP DIVE */
+.nc-dd{border-top:1px solid var(--line);margin-top:16px;padding-top:14px}
+.dd-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;border:1.5px solid var(--copper);background:transparent;color:var(--copper);font-size:12.5px;font-weight:600;font-family:'Libre Franklin',sans-serif;cursor:pointer;transition:all 0.2s}
+.dd-btn:active{transform:scale(0.96);background:var(--copper-light)}
+.dd-btn.open{background:var(--copper-light)}
+.dd-content{margin-top:14px;font-size:14px;line-height:1.75;color:var(--ink2);animation:sd 0.3s ease}
+.dd-content p{margin-bottom:10px}.dd-content p:last-child{margin-bottom:0}
+.dd-content b,.dd-content strong{color:var(--ink);font-weight:600}
+body.hindi .dd-content{font-family:'Tiro Devanagari Hindi','Libre Franklin',sans-serif;font-size:14.5px;line-height:1.85}
+
+/* SPARKLINE */
+.nc-sparkline{margin-bottom:16px;background:var(--cream);border-radius:var(--rs);padding:14px 16px;border:1px solid var(--line)}
+.nc-sparkline .sp-header{font-size:10px;font-weight:700;letter-spacing:0.5px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.nc-sparkline svg{width:100%;display:block}
+.sp-meta{display:flex;justify-content:space-between;margin-top:8px}
+.sp-meta .sp-labels{display:flex;justify-content:space-between;flex:1}
+.sp-meta span{font-size:8.5px;color:var(--muted)}
+.sp-vals{display:flex;justify-content:space-between;margin-bottom:4px}
+.sp-vals span{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--ink)}
+
+/* TREND PILL */
+.trend-pill{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;font-family:'Libre Franklin',sans-serif;margin-bottom:16px}
+.trend-pill.up{background:var(--teal-light);color:var(--teal)}
+.trend-pill.down{background:var(--copper-light);color:var(--copper)}
+.trend-pill.flat{background:var(--blue-light);color:var(--blue)}
+
+/* MORNING BRIEF HTML */
+.brief-text b,.brief-text strong{font-weight:600;color:var(--ink);font-style:normal}
+.brief-text ul{margin:8px 0;padding-left:0;list-style:none}
+.brief-text li{padding:5px 0 5px 18px;line-height:1.65;position:relative;font-style:normal}
+.brief-text li::before{content:'·';position:absolute;left:4px;color:var(--copper);font-weight:700;font-size:18px;line-height:1.4}
+
 .nc-ins{background:var(--copper-light);border-left:3px solid var(--copper);border-radius:0 var(--rs) var(--rs) 0;padding:13px 16px;margin-bottom:16px}
 .nc-ins .lb{font-size:10px;font-weight:700;letter-spacing:0.8px;color:var(--copper);margin-bottom:5px;text-transform:uppercase}
 .nc-ins p{font-size:13.5px;line-height:1.65;color:var(--ink2)}
@@ -268,13 +300,16 @@ const BCOL={'LATEST':'#b84040','ACTION NEEDED':'#b8622e','NEW':'#3568a8','GAME C
 const NC=['c-copper','c-teal','c-blue','c-gold'];
 const IMP_LABELS={'must-read':'Must Read','good-to-know':'Good to Know','fyi':'FYI'};
 
-let S={screen:'init',user:JSON.parse(localStorage.getItem('bp_user')||'null'),token:localStorage.getItem('bp_token')||'',plan:localStorage.getItem('bp_plan')||'free',news:JSON.parse(localStorage.getItem('bp_data')||'[]'),circulars:JSON.parse(localStorage.getItem('bp_circ')||'[]'),brief:localStorage.getItem('bp_brief')||'',briefHi:localStorage.getItem('bp_briefhi')||'',readIds:new Set(JSON.parse(localStorage.getItem('bp_read')||'[]')),savedIds:new Set(JSON.parse(localStorage.getItem('bp_saved')||'[]')),checkedActions:new Set(JSON.parse(localStorage.getItem('bp_checks')||'[]')),lastFetch:localStorage.getItem('bp_ts')||null,cat:'all',open:new Set(),fetching:false,progress:'',error:null,settings:false,hindi:localStorage.getItem('bp_hindi')==='1'};
+let S={screen:'init',user:JSON.parse(localStorage.getItem('bp_user')||'null'),token:localStorage.getItem('bp_token')||'',plan:localStorage.getItem('bp_plan')||'free',news:JSON.parse(localStorage.getItem('bp_data')||'[]'),circulars:JSON.parse(localStorage.getItem('bp_circ')||'[]'),brief:localStorage.getItem('bp_brief')||'',briefHi:localStorage.getItem('bp_briefhi')||'',readIds:new Set(JSON.parse(localStorage.getItem('bp_read')||'[]')),savedIds:new Set(JSON.parse(localStorage.getItem('bp_saved')||'[]')),checkedActions:new Set(JSON.parse(localStorage.getItem('bp_checks')||'[]')),lastFetch:localStorage.getItem('bp_ts')||null,cat:'all',open:new Set(),ddOpen:new Set(),fetching:false,progress:'',error:null,settings:false,hindi:localStorage.getItem('bp_hindi')==='1'};
 function set(u){Object.assign(S,u);render();}
 function esc(s){return !s?'':String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function stale(){return !S.lastFetch||(Date.now()-new Date(S.lastFetch).getTime())>6*36e5;}
 function ago(ds){if(!ds)return'Never';const m=Math.floor((Date.now()-new Date(ds).getTime())/6e4);if(m<1)return'Just now';if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago';}
 function bcol(b){return BCOL[b]||'#a68a3e';}
 function cleanAI(t){if(!t)return'';return t.replace(/<\/?cite[^>]*>/gi,'').replace(/<\/?antml:cite[^>]*>/gi,'').replace(/<[^>]+>/g,'').replace(/\[\d+(?:,\s*\d+)*\]/g,'').replace(/\s+/g,' ').trim();}
+function cleanAIHTML(t){if(!t)return'';return t.replace(/<\/?cite[^>]*>/gi,'').replace(/<\/?antml:cite[^>]*>/gi,'').replace(/\[\d+(?:,\s*\d+)*\]/g,'').trim();}
+function formatDate(isoDate){if(!isoDate)return'';const d=new Date(isoDate);const now=new Date();const diffDays=Math.floor((now-d)/864e5);if(diffDays===0)return'Today';if(diffDays===1)return'Yesterday';if(diffDays<7)return diffDays+' days ago';return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
+function sparklineSVG(td){const pts=td.points;if(!pts||pts.length<4)return'';const w=280,h=56,pad=4;const vals=pts.map(p=>typeof p.value==='number'?p.value:parseFloat(p.value)||0);const mn=Math.min(...vals),mx=Math.max(...vals),range=mx-mn||1;const coords=vals.map((v,i)=>{const x=pad+(i/(vals.length-1))*(w-2*pad);const y=pad+(1-(v-mn)/range)*(h-2*pad);return[x,y];});const color=td.direction==='down'?'var(--copper)':'var(--teal)';const fill=td.direction==='down'?'rgba(184,98,46,0.08)':'rgba(42,122,109,0.08)';const line=coords.map(c=>c.join(',')).join(' ');const area='M'+coords[0].join(',')+' '+coords.map(c=>'L'+c.join(',')).join(' ')+' L'+(w-pad)+','+h+' L'+pad+','+h+' Z';const dots=coords.map(c=>'<circle cx="'+c[0]+'" cy="'+c[1]+'" r="2.5" fill="'+color+'"/>').join('');return'<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" style="height:56px"><path d="'+area+'" fill="'+fill+'"/><polyline points="'+line+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+dots+'</svg>';}
 function markRead(id){S.readIds.add(id);localStorage.setItem('bp_read',JSON.stringify([...S.readIds]));}
 function toggleSave(id){if(S.savedIds.has(id)){S.savedIds.delete(id);toast('Removed');}else{S.savedIds.add(id);toast('Saved');}localStorage.setItem('bp_saved',JSON.stringify([...S.savedIds]));set({});}
 function toggleCheck(key){if(S.checkedActions.has(key))S.checkedActions.delete(key);else S.checkedActions.add(key);localStorage.setItem('bp_checks',JSON.stringify([...S.checkedActions]));set({});}
@@ -310,9 +345,9 @@ async function fetchNews(){
     const rows=await resp.json();
     if(!rows.length||!rows[0].data)throw new Error('No news available yet. Check back soon!');
     const d=rows[0].data;
-    const news=(d.news||[]).map(n=>({...n,title:cleanAI(n.title),titleHi:cleanAI(n.titleHi),summary:cleanAI(n.summary),summaryHi:cleanAI(n.summaryHi),whyItMatters:cleanAI(n.whyItMatters),whyItMattersHi:cleanAI(n.whyItMattersHi),importance:(['must-read','good-to-know','fyi'].includes(n.importance))?n.importance:'fyi',sources:(n.sources||[]).map(s=>({name:cleanAI(s.name),url:s.url||''})),keyNumbers:(n.keyNumbers||[]).map(k=>({label:cleanAI(k.label),value:cleanAI(k.value)})),trend:(n.trend||[]).map(t=>({label:cleanAI(t.label),value:cleanAI(t.value)}))}));
+    const news=(d.news||[]).map(n=>({...n,title:cleanAI(n.title),titleHi:cleanAI(n.titleHi),summary:cleanAI(n.summary),summaryHi:cleanAI(n.summaryHi),whyItMatters:cleanAI(n.whyItMatters),whyItMattersHi:cleanAI(n.whyItMattersHi),deepDive:cleanAIHTML(n.deepDive),deepDiveHi:cleanAIHTML(n.deepDiveHi),importance:(['must-read','good-to-know','fyi'].includes(n.importance))?n.importance:'fyi',sources:(n.sources||[]).map(s=>({name:cleanAI(s.name),url:s.url||''})),keyNumbers:(n.keyNumbers||[]).map(k=>({label:cleanAI(k.label),value:cleanAI(k.value)})),trendData:n.trendData?{metric:cleanAI(n.trendData.metric||''),points:(n.trendData.points||[]).map(p=>({date:cleanAI(p.date),value:typeof p.value==='number'?p.value:parseFloat(p.value)||0})),direction:n.trendData.direction||'flat',summary:cleanAI(n.trendData.summary||'')}:null}));
     const circs=(d.circulars||[]).map(c=>({...c,title:cleanAI(c.title),titleHi:cleanAI(c.titleHi),summary:cleanAI(c.summary),summaryHi:cleanAI(c.summaryHi),actions:(c.actions||[]).map(cleanAI),actionsHi:(c.actionsHi||[]).map(cleanAI)}));
-    const brief=cleanAI(d.morningBrief||'');const briefHi=cleanAI(d.morningBriefHi||'');
+    const brief=cleanAIHTML(d.morningBrief||'');const briefHi=cleanAIHTML(d.morningBriefHi||'');
     const newIds=new Set(news.map(n=>n.id));const older=S.news.filter(n=>!newIds.has(n.id)&&!n.locked);const all=[...news,...older].slice(0,80);
     const now=new Date().toISOString();
     localStorage.setItem('bp_data',JSON.stringify(all));localStorage.setItem('bp_ts',now);
@@ -374,7 +409,7 @@ function rApp(){
     return`<button class="tab ${S.cat===t.id?'on':''}" data-c="${t.id}">${l}</button>`;
   }).join('')}</div></div>
 
-  ${briefTxt&&!isAction?`<div class="brief"><div class="brief-accent"></div><div class="brief-inner"><div class="brief-top"><div class="brief-icon">☀️</div><span class="brief-label">${S.hindi?'सुबह की जानकारी':'Morning Brief'}</span><span class="brief-date">${today}</span></div><p class="brief-text">${esc(briefTxt)}</p><div class="brief-counts"><span class="brief-ct"><span class="dot mr"></span>${mustC} ${S.hindi?'ज़रूरी':'Must Read'}</span><span class="brief-ct"><span class="dot gk"></span>${goodC} ${S.hindi?'जानकारी':'Good to Know'}</span><span class="brief-ct"><span class="dot fy"></span>${fyiC} FYI</span></div></div></div>`:''}
+  ${briefTxt&&!isAction?`<div class="brief"><div class="brief-accent"></div><div class="brief-inner"><div class="brief-top"><div class="brief-icon">☀️</div><span class="brief-label">${S.hindi?'सुबह की जानकारी':'Morning Brief'}</span><span class="brief-date">${today}</span></div><div class="brief-text">${briefTxt}</div><div class="brief-counts"><span class="brief-ct"><span class="dot mr"></span>${mustC} ${S.hindi?'ज़रूरी':'Must Read'}</span><span class="brief-ct"><span class="dot gk"></span>${goodC} ${S.hindi?'जानकारी':'Good to Know'}</span><span class="brief-ct"><span class="dot fy"></span>${fyiC} FYI</span></div></div></div>`:''}
 
   <div class="stat"><span><span class="dot ${fresh?'':'stale'}${S.error?' err':''}"></span>${S.hindi?'अपडेट':'Updated'} ${ago(S.lastFetch)}</span><span>${isAction?actC+' items':fl.length+' '+(S.hindi?'खबरें':'stories')}</span></div>
   ${S.error?`<div class="err-bar">⚠ ${esc(S.error)}</div>`:''}${S.fetching?`<div class="prog"><div class="dp"><span></span><span></span><span></span></div>${esc(S.progress)}</div>`:''}
@@ -414,20 +449,36 @@ function rActionTab(){
 function rCard(n,isRd){
   if(n.locked){
     const title=S.hindi&&n.titleHi?n.titleHi:n.title;const imp=n.importance||'fyi';const bc=bcol(n.badge);
-    return`<div class="nc locked"><div class="imp-strip ${imp}"></div><div class="nc-h"><div class="nc-m"><span class="nc-cat">${esc(CAT_LABELS[n.category]||n.category)}</span><span class="nc-badge" style="background:${bc}">${esc(n.badge)}</span><span class="nc-imp ${imp}">${IMP_LABELS[imp]||'FYI'}</span><span class="nc-date">${esc(n.date||'')}</span></div><div class="nc-t"><span>${esc(title)}</span><span style="color:var(--copper);font-size:11px;font-weight:600">🔒 Pro</span></div></div></div>`;
+    return`<div class="nc locked"><div class="imp-strip ${imp}"></div><div class="nc-h"><div class="nc-m"><span class="nc-cat">${esc(CAT_LABELS[n.category]||n.category)}</span><span class="nc-badge" style="background:${bc}">${esc(n.badge)}</span><span class="nc-imp ${imp}">${IMP_LABELS[imp]||'FYI'}</span><span class="nc-date">${formatDate(n.date)}</span></div><div class="nc-t"><span>${esc(title)}</span><span style="color:var(--copper);font-size:11px;font-weight:600">🔒 Pro</span></div></div></div>`;
   }
   const x=S.open.has(n.id),bc=bcol(n.badge),imp=n.importance||'fyi',isSaved=S.savedIds.has(n.id);
   const title=S.hindi&&n.titleHi?n.titleHi:n.title;
   const summary=S.hindi&&n.summaryHi?n.summaryHi:n.summary;
   const wim=S.hindi&&n.whyItMattersHi?n.whyItMattersHi:n.whyItMatters;
-  const hasTrend=n.trend&&n.trend.length>=2;
+  const deepDive=S.hindi&&n.deepDiveHi?n.deepDiveHi:n.deepDive;
+  const isDDOpen=S.ddOpen.has(n.id);
+  // Trend rendering: sparkline for 4+ points, pill for summary-only, fallback for old format
   let trendHtml='';
-  if(hasTrend&&x){
-    const vals=n.trend.map(t=>{const m=t.value.replace(/[^\d.]/g,'');return parseFloat(m)||0;});
-    const mx=Math.max(...vals),mn=Math.min(...vals),range=mx-mn||1;
-    trendHtml=`<div class="nc-trend"><div class="tr-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> ${S.hindi?'रुझान':'Trend'}</div><div class="tr-bars">${n.trend.map((t,i)=>{const v=vals[i];const pct=20+((v-mn)/range)*80;const prev=i>0?vals[i-1]:v;const cls=v>prev?'up':v<prev?'dn':'nt';return`<div class="tr-bar"><div class="bv">${esc(t.value)}</div><div class="bar ${cls}" style="height:${pct}%"></div><div class="bl">${esc(t.label)}</div></div>`;}).join('')}</div></div>`;
+  if(x){
+    const td=n.trendData;
+    if(td){
+      if(td.points&&td.points.length>=4){
+        const svg=sparklineSVG(td);
+        const pts=td.points;
+        trendHtml=`<div class="nc-sparkline"><div class="sp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> ${esc(td.metric||'')} ${S.hindi?'रुझान':'Trend'}</div><div class="sp-vals"><span>${pts[0].value}</span><span>${pts[pts.length-1].value}</span></div>${svg}<div class="sp-meta"><div class="sp-labels"><span>${esc(pts[0].date)}</span><span>${esc(pts[pts.length-1].date)}</span></div></div></div>`;
+      }else if(td.summary){
+        const dir=td.direction||'flat';const arrow=dir==='up'?'↑':dir==='down'?'↓':'→';
+        trendHtml=`<div class="trend-pill ${dir}">${arrow} ${esc(td.summary)}</div>`;
+      }
+    }else if(n.trend&&n.trend.length>=2){
+      // Old format fallback: show as trend pill
+      const t=n.trend;const first=t[0],last=t[t.length-1];
+      trendHtml=`<div class="trend-pill flat">📊 ${esc(first.label)}: ${esc(first.value)} → ${esc(last.label)}: ${esc(last.value)}</div>`;
+    }
   }
-  return`<div class="nc ${x?'open':''} ${isRd?'rd':''}"><div class="imp-strip ${imp}"></div><div class="nc-h" data-t="${esc(n.id)}"><div class="nc-m"><span class="nc-cat">${esc(CAT_LABELS[n.category]||n.category)}</span><span class="nc-badge" style="background:${bc}">${esc(n.badge)}</span><span class="nc-imp ${imp}">${IMP_LABELS[imp]||'FYI'}</span><span class="nc-date">${esc(n.date||'')}</span></div><div class="nc-t"><span>${esc(title)}</span><span class="arr">▾</span></div>${summary?`<div class="nc-preview">${esc(summary)}</div>`:''}${n.keyNumbers&&n.keyNumbers.length?`<div class="nc-pills">${n.keyNumbers.slice(0,3).map(k=>`<span class="nc-pill"><span class="pv">${esc(k.value)}</span><span class="pl">${esc(k.label)}</span></span>`).join('')}</div>`:''}${wim?`<div class="nc-wim-peek">🏦 ${S.hindi?'ज़रूरी क्यों → टैप करें':'Why it matters → tap to read'}</div>`:''}</div>${x?`<div class="nc-b"><p class="nc-summary">${esc(summary)}</p>${n.keyNumbers&&n.keyNumbers.length?`<div class="nc-nums">${n.keyNumbers.map((k,i)=>`<div class="nm ${NC[i%4]}"><div class="v">${esc(k.value)}</div><div class="l">${esc(k.label)}</div></div>`).join('')}</div>`:''}${trendHtml}${wim?`<div class="nc-ins"><div class="lb">🏦 ${S.hindi?'आपके लिए क्यों ज़रूरी':'Why It Matters'}</div><p>${esc(wim)}</p></div>`:''}<div class="nc-foot"><div class="nc-src"><span class="lb">Sources</span>${(n.sources||[]).map(s=>`<a class="sc" href="${esc(s.url||'#')}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join('')}</div><div class="nc-actions"><button class="act-btn save-btn ${isSaved?'saved':''}" data-save="${esc(n.id)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>${isSaved?'✓':S.hindi?'सेव':'Save'}</button><button class="act-btn share-btn" data-share="${esc(n.id)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>${S.hindi?'शेयर':'Share'}</button></div></div></div>`:''}</div>`;
+  // Deep dive section
+  const ddHtml=deepDive&&x?`<div class="nc-dd"><button class="dd-btn ${isDDOpen?'open':''}" data-dd="${esc(n.id)}">📖 ${S.hindi?'विस्तार से समझें':'Explain This'} ${isDDOpen?'▴':'→'}</button>${isDDOpen?`<div class="dd-content">${deepDive}</div>`:''}</div>`:'';
+  return`<div class="nc ${x?'open':''} ${isRd?'rd':''}"><div class="imp-strip ${imp}"></div><div class="nc-h" data-t="${esc(n.id)}"><div class="nc-m"><span class="nc-cat">${esc(CAT_LABELS[n.category]||n.category)}</span><span class="nc-badge" style="background:${bc}">${esc(n.badge)}</span><span class="nc-imp ${imp}">${IMP_LABELS[imp]||'FYI'}</span><span class="nc-date">${formatDate(n.date)}</span></div><div class="nc-t"><span>${esc(title)}</span><span class="arr">▾</span></div>${summary?`<div class="nc-preview">${esc(summary)}</div>`:''}${n.keyNumbers&&n.keyNumbers.length?`<div class="nc-pills">${n.keyNumbers.slice(0,3).map(k=>`<span class="nc-pill"><span class="pv">${esc(k.value)}</span><span class="pl">${esc(k.label)}</span></span>`).join('')}</div>`:''}${wim?`<div class="nc-wim-peek">🏦 ${S.hindi?'ज़रूरी क्यों → टैप करें':'Why it matters → tap to read'}</div>`:''}</div>${x?`<div class="nc-b"><p class="nc-summary">${esc(summary)}</p>${n.keyNumbers&&n.keyNumbers.length?`<div class="nc-nums">${n.keyNumbers.map((k,i)=>`<div class="nm ${NC[i%4]}"><div class="v">${esc(k.value)}</div><div class="l">${esc(k.label)}</div></div>`).join('')}</div>`:''}${trendHtml}${wim?`<div class="nc-ins"><div class="lb">🏦 ${S.hindi?'आपके लिए क्यों ज़रूरी':'Why It Matters'}</div><p>${esc(wim)}</p></div>`:''}${ddHtml}<div class="nc-foot"><div class="nc-src"><span class="lb">Sources</span>${(n.sources||[]).map(s=>`<a class="sc" href="${esc(s.url||'#')}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join('')}</div><div class="nc-actions"><button class="act-btn save-btn ${isSaved?'saved':''}" data-save="${esc(n.id)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>${isSaved?'✓':S.hindi?'सेव':'Save'}</button><button class="act-btn share-btn" data-share="${esc(n.id)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>${S.hindi?'शेयर':'Share'}</button></div></div></div>`:''}</div>`;
 }
 
 function rSettings(){
@@ -455,6 +506,7 @@ function bApp(){
   document.querySelectorAll('[data-t]').forEach(el=>el.addEventListener('click',()=>{const id=el.dataset.t;const next=new Set(S.open);if(next.has(id)){next.delete(id);markRead(id);}else{next.add(id);}set({open:next});}));
   document.querySelectorAll('[data-save]').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();toggleSave(b.dataset.save);});});
   document.querySelectorAll('[data-share]').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();const item=S.news.find(n=>n.id===b.dataset.share);if(item)shareCard(item);});});
+  document.querySelectorAll('[data-dd]').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();const id=b.dataset.dd;const next=new Set(S.ddOpen);if(next.has(id))next.delete(id);else next.add(id);set({ddOpen:next});});});
   document.querySelectorAll('[data-check]').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();toggleCheck(b.dataset.check);});});
   document.getElementById('ov')?.addEventListener('click',e=>{if(e.target.id==='ov')set({settings:false});});
   document.getElementById('mc')?.addEventListener('click',()=>set({settings:false}));
