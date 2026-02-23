@@ -54,10 +54,9 @@ body.hindi .hi{display:block!important}.hi{display:none!important}body.hindi .en
 .brief-date{font-size:11px;color:var(--faint);margin-left:auto}
 .brief-text{font-family:'Newsreader',serif;font-size:15.5px;line-height:1.7;color:var(--ink2)}
 .brief-text b,.brief-text strong{color:var(--ink);font-weight:600}
-.brief-text ul{list-style:none;padding:0;margin:8px 0}
-.brief-text li{padding:6px 0 6px 14px;position:relative;line-height:1.6}
-.brief-text li::before{content:'';position:absolute;left:0;top:14px;width:4px;height:4px;border-radius:50%;background:var(--copper)}
-.brief-text li+li{border-top:1px solid var(--line)}
+.brief-text ul{list-style:none;padding:0;margin:10px 0 4px}
+.brief-text li{padding:10px 12px 10px 14px;position:relative;line-height:1.55;background:var(--cream);border-radius:var(--rs);margin-bottom:6px;border-left:3px solid var(--copper);font-size:14.5px}
+.brief-text li b,.brief-text li strong{color:var(--copper);font-weight:700;font-size:13px;letter-spacing:0.2px}
 body.hindi .brief-text{font-family:'Tiro Devanagari Hindi','Newsreader',serif;font-size:16px}
 .brief-counts{display:flex;gap:12px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
 .brief-ct{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
@@ -329,8 +328,9 @@ async function fetchNews(){
     const rows=await resp.json();
     if(!rows.length||!rows[0].data)throw new Error('No news available yet. Check back soon!');
     const d=rows[0].data;
+    console.log('[BP] Raw data: deepDives=',d.news?.filter(n=>n.deepDive).length,'trends=',d.news?.filter(n=>n.trendData).length);
     const cleanDD=(t)=>{if(!t)return'';return t.replace(/<\/?cite[^>]*>/gi,'').replace(/<\/?antml:cite[^>]*>/gi,'').replace(/\[\d+(?:,\s*\d+)*\]/g,'').replace(/\s+/g,' ').trim();};
-    const news=(d.news||[]).map(n=>{const td=n.trendData||null;return{...n,title:cleanAI(n.title),titleHi:cleanAI(n.titleHi),summary:cleanAI(n.summary),summaryHi:cleanAI(n.summaryHi),whyItMatters:cleanAI(n.whyItMatters),whyItMattersHi:cleanAI(n.whyItMattersHi),deepDive:cleanDD(n.deepDive),deepDiveHi:cleanDD(n.deepDiveHi),importance:(['must-read','good-to-know','fyi'].includes(n.importance))?n.importance:'fyi',sources:(n.sources||[]).map(s=>({name:cleanAI(s.name),url:s.url||''})),keyNumbers:(n.keyNumbers||[]).map(k=>({label:cleanAI(k.label),value:cleanAI(k.value)})),trendData:td?{metric:cleanAI(td.metric),points:(td.points||[]).map(p=>({date:cleanAI(p.date),value:p.value})),direction:td.direction||'neutral',summary:cleanAI(td.summary)}:null,trend:(n.trend||[]).map(t=>({label:cleanAI(t.label),value:cleanAI(t.value)}))}});
+    const news=(d.news||[]).map(n=>{const td=n.trendData||null;return{...n,title:cleanAI(n.title),titleHi:cleanAI(n.titleHi),summary:cleanAI(n.summary),summaryHi:cleanAI(n.summaryHi),whyItMatters:cleanAI(n.whyItMatters),whyItMattersHi:cleanAI(n.whyItMattersHi),deepDive:cleanDD(n.deepDive),deepDiveHi:cleanDD(n.deepDiveHi),importance:(['must-read','good-to-know','fyi'].includes(n.importance))?n.importance:'fyi',sources:(n.sources||[]).map(s=>({name:cleanAI(s.name),url:s.url||''})),keyNumbers:(n.keyNumbers||[]).map(k=>({label:cleanAI(k.label),value:cleanAI(k.value)})),trendData:td?{metric:cleanAI(td.metric),points:(td.points||[]).map(p=>({date:cleanAI(p.date),value:typeof p.value==='string'?parseFloat(p.value)||0:p.value})),direction:td.direction||'neutral',summary:cleanAI(td.summary)}:null,trend:(n.trend||[]).map(t=>({label:cleanAI(t.label),value:cleanAI(t.value)}))}});
     const circs=(d.circulars||[]).map(c=>({...c,title:cleanAI(c.title),titleHi:cleanAI(c.titleHi),summary:cleanAI(c.summary),summaryHi:cleanAI(c.summaryHi),actions:(c.actions||[]).map(cleanAI),actionsHi:(c.actionsHi||[]).map(cleanAI)}));
     const brief=cleanDD(d.morningBrief||'');const briefHi=cleanDD(d.morningBriefHi||'');
     const newIds=new Set(news.map(n=>n.id));const older=S.news.filter(n=>!newIds.has(n.id)&&!n.locked);const all=[...news,...older].slice(0,80);

@@ -54,18 +54,18 @@ jobs:
           Badges: LATEST, BREAKING, ACTION NEEDED, GAME CHANGER, NEW, UPDATE, IMPORTANT, POLICY
           keyNumbers: Include 2-4 key numbers per story (rate, amount, date, count)
 
-          TREND DATA:
-          For 2-3 stories with rate/number changes across time, add a trendData object:
-          If you can find 4+ data points over a meaningful time period (3+ months), return:
-          {"trendData":{"metric":"MCLR Rate","points":[{"date":"Oct 25","value":8.71},{"date":"Nov 25","value":8.55},{"date":"Dec 25","value":8.28},{"date":"Jan 26","value":8.4}],"direction":"down","summary":"down 31 bps since Oct"}}
-          If you cannot find 4+ reliable data points, return summary-only:
-          {"trendData":{"metric":"MCLR Rate","points":[],"direction":"down","summary":"down 31 bps since Oct"}}
-          NEVER return {"label":"","value":""} format — always use the trendData object format above.
+          TREND DATA (REQUIRED for at least 2 stories):
+          You MUST include trendData for at least 2 news items that involve rates, amounts, or counts changing over time.
+          Even if you only have a direction and summary (no exact data points), ALWAYS include the trendData object:
+          {"trendData":{"metric":"Repo Rate","points":[],"direction":"down","summary":"cut 25 bps to 6.25%"}}
+          If you can find 4+ data points: {"trendData":{"metric":"MCLR Rate","points":[{"date":"Oct 25","value":8.71},{"date":"Nov 25","value":8.55},{"date":"Dec 25","value":8.28},{"date":"Jan 26","value":8.4}],"direction":"down","summary":"down 31 bps since Oct"}}
 
-          DEEP DIVE (only for top 2 "must-read" stories):
-          For the top 2 most important "must-read" stories ONLY, generate a "deepDive" field — ONE short paragraph (3-4 sentences max, under 300 characters). Cover what happened and one concrete action for the branch manager. Wrap in a single <p> tag.
-          Also generate "deepDiveHi" in Hindi (same structure, under 400 characters).
-          For ALL other stories (including other must-reads), omit deepDive and deepDiveHi entirely.
+          DEEP DIVE (REQUIRED for first 2 must-read stories):
+          You MUST include a "deepDive" field for the first 2 stories with importance "must-read". This is not optional.
+          Format: ONE short paragraph, 3-4 sentences, wrapped in <p> tag. Cover what happened + one concrete action.
+          Example: "<p>RBI cut repo by 25 bps to 6.25%, first cut since 2020. Your MCLR-linked loans should reprice within the cycle. Check with HO if your branch's lending rates have been updated — borrowers will start asking.</p>"
+          Also include "deepDiveHi" in Hindi with same structure.
+          For all other stories, omit deepDive/deepDiveHi.
 
           RESPOND IN VALID JSON ONLY. Structure:
           {"morningBrief":"...","morningBriefHi":"...","news":[{...}],"circulars":[{...}]}
@@ -75,7 +75,10 @@ jobs:
           CRITICAL RULES:
           - NO cite tags, NO [1] references
           - HTML allowed ONLY in morningBrief, morningBriefHi, deepDive, deepDiveHi
-          - 8-10 news + 2-3 circulars. BE CONCISE. Total JSON must be under 12000 characters.`;
+          - 8-10 news + 2-3 circulars. BE CONCISE.
+          - MUST include deepDive + deepDiveHi for first 2 must-read news items
+          - MUST include trendData for at least 2 news items (even if points array is empty, include direction + summary)
+          - Summaries must sound like a colleague talking, NOT a news wire. Use "you/your" and be specific about branch impact.`;
 
           console.log('[fetch-news] Calling Claude API...');
 
