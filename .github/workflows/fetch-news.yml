@@ -36,21 +36,19 @@ jobs:
           - Hindi should be natural spoken Hindi, not textbook: "ये आपके काम पर सीधा असर डालेगा" not "यह बैंकिंग क्षेत्र को प्रभावित करेगा"
 
           VOICE GUIDE FOR SUMMARIES:
-          The summary should be 3-4 lines (not 2), lead with the key takeaway, use "you/your" language, and include at least one concrete implication for a branch manager at a Regional Rural Bank.
-          BAD (news wire): "RBI maintained repo rate at 5.25% with neutral stance while bank MCLR rates dropped to 8.4% in January 2026. Fresh loan rates fell to 8.28% in December, making credit cheaper for borrowers."
-          GOOD (sharp colleague): "RBI held the repo rate at 5.25% — no surprise there. But here's what matters: banks are cutting MCLR anyway, down to 8.4%. Your borrowers are about to get cheaper loans whether RBI moves or not."
-          BAD: "The government has announced an increase in the agricultural credit target to ₹25 lakh crore for FY27."
-          GOOD: "Big one for KCC portfolios — agri credit target just jumped to ₹25 lakh crore for FY27. If your branch has been slow on KCC sanctions, now's the time to push."
+          Summary: 2-3 lines max. Lead with the key takeaway, use "you/your" language.
+          GOOD: "RBI held repo at 5.25%. But banks are cutting MCLR anyway — your borrowers get cheaper loans."
+          GOOD: "Agri credit target jumped to ₹25L cr for FY27. Push KCC sanctions now."
 
           MORNING BRIEF FORMAT:
-          Format the morningBrief as an HTML string with clear sections:
-          - Opening hook (1 line, bold): "<b>Big week — here's what you need to know before the morning meeting.</b>"
-          - Then 4-6 bullet points in a <ul>, each one story/development in 1-2 punchy lines
-          - Each bullet should start with a bold keyword/topic: "<li><b>Repo Rate:</b> Held at 5.25%, but MCLR cuts mean cheaper loans for your borrowers.</li>"
-          - End with a closing line after the list
-          The morningBriefHi should follow the same HTML structure but in natural spoken Hindi.
+          Format the morningBrief as an HTML string — keep it SHORT:
+          - Opening hook (1 line, bold): "<b>Big week — here's what you need to know.</b>"
+          - Then 3-4 bullet points in a <ul>, each one story in 1 punchy line
+          - Each bullet starts with a bold topic: "<li><b>Repo Rate:</b> Held at 5.25%.</li>"
+          - End with a short closing line (max 10 words)
+          The morningBriefHi should follow the same HTML structure but in natural spoken Hindi. Keep morningBrief under 400 characters and morningBriefHi under 500 characters.
 
-          Return 12-18 news items + 3-5 circulars.
+          Return 8-10 news items + 2-3 circulars. KEEP TOTAL RESPONSE SHORT — under 12000 characters of JSON.
           Categories: rbi, banking, msme, digital, rrb, markets, budget, nabard
           Importance: "must-read" (will change your branch operations), "good-to-know" (useful context), "fyi" (interesting but won't change your day)
           Badges: LATEST, BREAKING, ACTION NEEDED, GAME CHANGER, NEW, UPDATE, IMPORTANT, POLICY
@@ -64,20 +62,20 @@ jobs:
           {"trendData":{"metric":"MCLR Rate","points":[],"direction":"down","summary":"down 31 bps since Oct"}}
           NEVER return {"label":"","value":""} format — always use the trendData object format above.
 
-          DEEP DIVE (only for "must-read" stories):
-          For stories marked importance "must-read" ONLY (not good-to-know or fyi), generate a "deepDive" field (string, HTML allowed) containing a 2-3 paragraph concise explanation written like a knowledgeable colleague explaining over chai. Include:
-          - What exactly happened and who announced it
-          - Which specific banks/institutions are affected and historical context
-          - What this means for YOUR branch specifically — be concrete: "check if your MCLR-linked loans have been repriced", "expect more KCC applications this quarter"
-          - Any deadlines or dates to watch
-          Voice: Conversational, specific, practical. Use "you/your" frequently. Keep it concise — 2-3 short paragraphs max.
-          Wrap paragraphs in <p> tags and use <b> for key terms. Also generate "deepDiveHi" in natural spoken Hindi with the same HTML structure.
-          For "good-to-know" and "fyi" stories, omit deepDive and deepDiveHi fields entirely.
+          DEEP DIVE (only for top 2 "must-read" stories):
+          For the top 2 most important "must-read" stories ONLY, generate a "deepDive" field — ONE short paragraph (3-4 sentences max, under 300 characters). Cover what happened and one concrete action for the branch manager. Wrap in a single <p> tag.
+          Also generate "deepDiveHi" in Hindi (same structure, under 400 characters).
+          For ALL other stories (including other must-reads), omit deepDive and deepDiveHi entirely.
 
-          RESPOND IN VALID JSON ONLY:
-          {"morningBrief":"<b>Hook line.</b><ul><li><b>Topic:</b> Detail.</li></ul>Bottom line.","morningBriefHi":"...","news":[{"id":"n1","category":"rbi","badge":"LATEST","importance":"must-read","title":"...","titleHi":"...","summary":"...","summaryHi":"...","whyItMatters":"...","whyItMattersHi":"...","deepDive":"<p>Detailed explanation...</p>","deepDiveHi":"<p>...</p>","keyNumbers":[{"label":"...","value":"..."}],"trendData":{"metric":"...","points":[{"date":"...","value":0}],"direction":"up|down|neutral","summary":"..."},"sources":[{"name":"...","url":"..."}],"date":"2026-02-22"}],"circulars":[{"id":"c1","issuer":"RBI","number":"...","date":"...","title":"...","titleHi":"...","summary":"...","summaryHi":"...","deadline":"...","actions":["Check if your branch...","Update your..."],"actionsHi":["..."],"url":"https://..."}]}
+          RESPOND IN VALID JSON ONLY. Structure:
+          {"morningBrief":"...","morningBriefHi":"...","news":[{...}],"circulars":[{...}]}
+          News fields: id, category, badge, importance, title, titleHi, summary, summaryHi, whyItMatters, whyItMattersHi, keyNumbers[{label,value}], trendData (optional), sources[{name,url}], date, deepDive (optional), deepDiveHi (optional)
+          Circular fields: id, issuer, number, date, title, titleHi, summary, summaryHi, deadline, actions[], actionsHi[], url
 
-          CRITICAL: NO cite tags, NO [1] references. HTML is allowed ONLY in morningBrief, morningBriefHi, deepDive, and deepDiveHi fields. All other text fields must be clean plain text. Real source URLs. 12-18 news + 3-5 circulars.`;
+          CRITICAL RULES:
+          - NO cite tags, NO [1] references
+          - HTML allowed ONLY in morningBrief, morningBriefHi, deepDive, deepDiveHi
+          - 8-10 news + 2-3 circulars. BE CONCISE. Total JSON must be under 12000 characters.`;
 
           console.log('[fetch-news] Calling Claude API...');
 
@@ -90,12 +88,12 @@ jobs:
             },
             body: JSON.stringify({
               model: 'claude-sonnet-4-20250514',
-              max_tokens: 32000,
+              max_tokens: 40000,
               system: sysPrompt,
-              tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+              tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
               messages: [{
                 role: 'user',
-                content: 'Search for latest Indian banking news + recent RBI/NABARD/DFS circulars. Include Hindi translations and trend data. 10-15 news + 3-5 circulars. Clean JSON only.'
+                content: 'Search for latest Indian banking news + recent RBI/NABARD/DFS circulars. Include Hindi translations and trend data. 8-10 news + 2-3 circulars. Keep summaries short (2-3 lines). Deep dives only for top 2 must-reads (1 paragraph each). Total JSON must be under 12000 characters. Clean JSON only — no extra text before or after.'
               }],
             }),
           });
@@ -108,6 +106,10 @@ jobs:
           console.log('[fetch-news] Parsing response...');
 
           const data = await resp.json();
+          console.log('[fetch-news] Stop reason:', data.stop_reason, '| Output tokens:', data.usage?.output_tokens);
+          if (data.stop_reason === 'max_tokens') {
+            console.warn('[fetch-news] WARNING: Response was truncated (hit max_tokens). Will attempt repair.');
+          }
           let txt = '';
           for (const b of data.content) {
             if (b.type === 'text') txt += b.text;
