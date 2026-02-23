@@ -64,16 +64,15 @@ jobs:
           {"trendData":{"metric":"MCLR Rate","points":[],"direction":"down","summary":"down 31 bps since Oct"}}
           NEVER return {"label":"","value":""} format — always use the trendData object format above.
 
-          DEEP DIVE:
-          For each story, generate a "deepDive" field (string, HTML allowed) containing a 4-6 paragraph detailed explanation written like a knowledgeable colleague explaining over chai. Include:
+          DEEP DIVE (only for "must-read" stories):
+          For stories marked importance "must-read" ONLY (not good-to-know or fyi), generate a "deepDive" field (string, HTML allowed) containing a 2-3 paragraph concise explanation written like a knowledgeable colleague explaining over chai. Include:
           - What exactly happened and who announced it
-          - Which specific banks/institutions are affected
-          - Historical context (what was the rate/rule before?)
+          - Which specific banks/institutions are affected and historical context
           - What this means for YOUR branch specifically — be concrete: "check if your MCLR-linked loans have been repriced", "expect more KCC applications this quarter"
           - Any deadlines or dates to watch
-          - Related circulars if applicable
-          Voice: Conversational, specific, practical. Not a textbook. Use "you/your" frequently. Explain jargon in parentheses.
+          Voice: Conversational, specific, practical. Use "you/your" frequently. Keep it concise — 2-3 short paragraphs max.
           Wrap paragraphs in <p> tags and use <b> for key terms. Also generate "deepDiveHi" in natural spoken Hindi with the same HTML structure.
+          For "good-to-know" and "fyi" stories, omit deepDive and deepDiveHi fields entirely.
 
           RESPOND IN VALID JSON ONLY:
           {"morningBrief":"<b>Hook line.</b><ul><li><b>Topic:</b> Detail.</li></ul>Bottom line.","morningBriefHi":"...","news":[{"id":"n1","category":"rbi","badge":"LATEST","importance":"must-read","title":"...","titleHi":"...","summary":"...","summaryHi":"...","whyItMatters":"...","whyItMattersHi":"...","deepDive":"<p>Detailed explanation...</p>","deepDiveHi":"<p>...</p>","keyNumbers":[{"label":"...","value":"..."}],"trendData":{"metric":"...","points":[{"date":"...","value":0}],"direction":"up|down|neutral","summary":"..."},"sources":[{"name":"...","url":"..."}],"date":"2026-02-22"}],"circulars":[{"id":"c1","issuer":"RBI","number":"...","date":"...","title":"...","titleHi":"...","summary":"...","summaryHi":"...","deadline":"...","actions":["Check if your branch...","Update your..."],"actionsHi":["..."],"url":"https://..."}]}
@@ -91,7 +90,7 @@ jobs:
             },
             body: JSON.stringify({
               model: 'claude-sonnet-4-20250514',
-              max_tokens: 16000,
+              max_tokens: 32000,
               system: sysPrompt,
               tools: [{ type: 'web_search_20250305', name: 'web_search' }],
               messages: [{
@@ -116,7 +115,7 @@ jobs:
 
           txt = txt.replace(/\`\`\`json\s*/g, '').replace(/\`\`\`\s*/g, '').trim();
           
-          // Robust JSON extraction and repair
+          // Robust JSON extraction and repair (string-aware to handle HTML in values)
           let parsed;
           try {
             // Try direct parse first
@@ -126,34 +125,60 @@ jobs:
           } catch(e1) {
             console.log('[fetch-news] Direct parse failed, attempting repair...');
             try {
-              // Find the opening brace and try to fix common issues
+              // Find the JSON start
               const start = txt.indexOf('"morningBrief"');
               if (start === -1) throw new Error('Cannot find JSON start');
               let jsonStr = txt.substring(start - 1);
-              // Make sure we start with {
               const bracePos = jsonStr.lastIndexOf('{', 5);
               if (bracePos >= 0) jsonStr = jsonStr.substring(bracePos);
               else jsonStr = '{' + jsonStr;
-              // Fix truncated JSON: ensure proper closing
-              let braces = 0, lastValid = 0;
+
+              // String-aware brace counting (skip content inside quoted strings)
+              let depth = 0, lastValid = 0, inStr = false, escape = false;
               for (let i = 0; i < jsonStr.length; i++) {
-                if (jsonStr[i] === '{') braces++;
-                if (jsonStr[i] === '}') { braces--; if (braces === 0) { lastValid = i; break; } }
+                const ch = jsonStr[i];
+                if (escape) { escape = false; continue; }
+                if (ch === '\\') { escape = true; continue; }
+                if (ch === '"') { inStr = !inStr; continue; }
+                if (inStr) continue;
+                if (ch === '{' || ch === '[') depth++;
+                if (ch === '}' || ch === ']') { depth--; if (depth === 0) { lastValid = i; break; } }
               }
-              if (lastValid > 0) jsonStr = jsonStr.substring(0, lastValid + 1);
-              else {
-                // Force close: remove trailing incomplete items
-                jsonStr = jsonStr.replace(/,\s*\{[^}]*$/, '');  // remove last incomplete object
-                jsonStr = jsonStr.replace(/,\s*"[^"]*$/, '');    // remove last incomplete string
-                // Close any open arrays and objects
-                const openBrackets = (jsonStr.match(/\[/g)||[]).length - (jsonStr.match(/\]/g)||[]).length;
-                const openBraces = (jsonStr.match(/\{/g)||[]).length - (jsonStr.match(/\}/g)||[]).length;
-                jsonStr += ']'.repeat(Math.max(0, openBrackets));
-                jsonStr += '}'.repeat(Math.max(0, openBraces));
+
+              if (lastValid > 0) {
+                jsonStr = jsonStr.substring(0, lastValid + 1);
+              } else {
+                // Truncated mid-string or mid-object — repair
+                console.log('[fetch-news] JSON truncated, attempting string-aware repair...');
+                // If we're inside a string, close it
+                if (inStr) {
+                  // Remove the partial string value and its key
+                  jsonStr = jsonStr.replace(/,?\s*"[^"]*":\s*"[^"]*$/, '');
+                  // If still broken, just truncate to last complete key-value
+                  if (jsonStr.endsWith('"')) jsonStr += '""';
+                }
+                // Remove trailing incomplete objects/arrays
+                jsonStr = jsonStr.replace(/,\s*\{[^{}]*$/, '');
+                jsonStr = jsonStr.replace(/,\s*"[^"]*$/, '');
+                // Re-count depth (string-aware) and close
+                depth = 0; inStr = false; escape = false;
+                const stack = [];
+                for (let i = 0; i < jsonStr.length; i++) {
+                  const ch = jsonStr[i];
+                  if (escape) { escape = false; continue; }
+                  if (ch === '\\') { escape = true; continue; }
+                  if (ch === '"') { inStr = !inStr; continue; }
+                  if (inStr) continue;
+                  if (ch === '{') stack.push('}');
+                  if (ch === '[') stack.push(']');
+                  if (ch === '}' || ch === ']') stack.pop();
+                }
+                // Close any remaining open brackets/braces
+                jsonStr = jsonStr.replace(/,\s*$/, '');
+                jsonStr += stack.reverse().join('');
               }
               // Fix common JSON issues
               jsonStr = jsonStr.replace(/,\s*([}\]])/g, '$1'); // trailing commas
-              jsonStr = jsonStr.replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":'); // unquoted keys
               parsed = JSON.parse(jsonStr);
             } catch(e2) {
               console.error('[fetch-news] JSON repair failed:', e2.message);
