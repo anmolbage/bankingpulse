@@ -33,20 +33,52 @@ jobs:
           - Lead every summary with WHY it matters, then the facts
           - "whyItMatters" should feel personal: "This means your MSME borrowers..." not "This impacts the banking sector"
           - Use parentheses to explain jargon: "MCLR (the rate your loans are linked to)"
-          - Morning brief should feel like: "Big week — here's what you need to know before the morning meeting"
           - Hindi should be natural spoken Hindi, not textbook: "ये आपके काम पर सीधा असर डालेगा" not "यह बैंकिंग क्षेत्र को प्रभावित करेगा"
+
+          VOICE GUIDE FOR SUMMARIES:
+          The summary should be 3-4 lines (not 2), lead with the key takeaway, use "you/your" language, and include at least one concrete implication for a branch manager at a Regional Rural Bank.
+          BAD (news wire): "RBI maintained repo rate at 5.25% with neutral stance while bank MCLR rates dropped to 8.4% in January 2026. Fresh loan rates fell to 8.28% in December, making credit cheaper for borrowers."
+          GOOD (sharp colleague): "RBI held the repo rate at 5.25% — no surprise there. But here's what matters: banks are cutting MCLR anyway, down to 8.4%. Your borrowers are about to get cheaper loans whether RBI moves or not."
+          BAD: "The government has announced an increase in the agricultural credit target to ₹25 lakh crore for FY27."
+          GOOD: "Big one for KCC portfolios — agri credit target just jumped to ₹25 lakh crore for FY27. If your branch has been slow on KCC sanctions, now's the time to push."
+
+          MORNING BRIEF FORMAT:
+          Format the morningBrief as an HTML string with clear sections:
+          - Opening hook (1 line, bold): "<b>Big week — here's what you need to know before the morning meeting.</b>"
+          - Then 4-6 bullet points in a <ul>, each one story/development in 1-2 punchy lines
+          - Each bullet should start with a bold keyword/topic: "<li><b>Repo Rate:</b> Held at 5.25%, but MCLR cuts mean cheaper loans for your borrowers.</li>"
+          - End with a closing line after the list
+          The morningBriefHi should follow the same HTML structure but in natural spoken Hindi.
 
           Return 12-18 news items + 3-5 circulars.
           Categories: rbi, banking, msme, digital, rrb, markets, budget, nabard
           Importance: "must-read" (will change your branch operations), "good-to-know" (useful context), "fyi" (interesting but won't change your day)
           Badges: LATEST, BREAKING, ACTION NEEDED, GAME CHANGER, NEW, UPDATE, IMPORTANT, POLICY
           keyNumbers: Include 2-4 key numbers per story (rate, amount, date, count)
-          trend: For 2-3 stories with rate/number changes across time, add trend array with 3-5 data points
+
+          TREND DATA:
+          For 2-3 stories with rate/number changes across time, add a trendData object:
+          If you can find 4+ data points over a meaningful time period (3+ months), return:
+          {"trendData":{"metric":"MCLR Rate","points":[{"date":"Oct 25","value":8.71},{"date":"Nov 25","value":8.55},{"date":"Dec 25","value":8.28},{"date":"Jan 26","value":8.4}],"direction":"down","summary":"down 31 bps since Oct"}}
+          If you cannot find 4+ reliable data points, return summary-only:
+          {"trendData":{"metric":"MCLR Rate","points":[],"direction":"down","summary":"down 31 bps since Oct"}}
+          NEVER return {"label":"","value":""} format — always use the trendData object format above.
+
+          DEEP DIVE:
+          For each story, generate a "deepDive" field (string, HTML allowed) containing a 4-6 paragraph detailed explanation written like a knowledgeable colleague explaining over chai. Include:
+          - What exactly happened and who announced it
+          - Which specific banks/institutions are affected
+          - Historical context (what was the rate/rule before?)
+          - What this means for YOUR branch specifically — be concrete: "check if your MCLR-linked loans have been repriced", "expect more KCC applications this quarter"
+          - Any deadlines or dates to watch
+          - Related circulars if applicable
+          Voice: Conversational, specific, practical. Not a textbook. Use "you/your" frequently. Explain jargon in parentheses.
+          Wrap paragraphs in <p> tags and use <b> for key terms. Also generate "deepDiveHi" in natural spoken Hindi with the same HTML structure.
 
           RESPOND IN VALID JSON ONLY:
-          {"morningBrief":"...","morningBriefHi":"...","news":[{"id":"n1","category":"rbi","badge":"LATEST","importance":"must-read","title":"...","titleHi":"...","summary":"...","summaryHi":"...","whyItMatters":"...","whyItMattersHi":"...","keyNumbers":[{"label":"...","value":"..."}],"trend":[{"label":"Oct 25","value":"6.5%"}],"sources":[{"name":"...","url":"..."}],"date":"2026-02-22"}],"circulars":[{"id":"c1","issuer":"RBI","number":"...","date":"...","title":"...","titleHi":"...","summary":"...","summaryHi":"...","deadline":"...","actions":["Check if your branch...","Update your..."],"actionsHi":["..."],"url":"https://..."}]}
+          {"morningBrief":"<b>Hook line.</b><ul><li><b>Topic:</b> Detail.</li></ul>Bottom line.","morningBriefHi":"...","news":[{"id":"n1","category":"rbi","badge":"LATEST","importance":"must-read","title":"...","titleHi":"...","summary":"...","summaryHi":"...","whyItMatters":"...","whyItMattersHi":"...","deepDive":"<p>Detailed explanation...</p>","deepDiveHi":"<p>...</p>","keyNumbers":[{"label":"...","value":"..."}],"trendData":{"metric":"...","points":[{"date":"...","value":0}],"direction":"up|down|neutral","summary":"..."},"sources":[{"name":"...","url":"..."}],"date":"2026-02-22"}],"circulars":[{"id":"c1","issuer":"RBI","number":"...","date":"...","title":"...","titleHi":"...","summary":"...","summaryHi":"...","deadline":"...","actions":["Check if your branch...","Update your..."],"actionsHi":["..."],"url":"https://..."}]}
 
-          CRITICAL: NO cite tags, NO [1] references, NO HTML markup. Clean plain text. Real source URLs. 12-18 news + 3-5 circulars.`;
+          CRITICAL: NO cite tags, NO [1] references. HTML is allowed ONLY in morningBrief, morningBriefHi, deepDive, and deepDiveHi fields. All other text fields must be clean plain text. Real source URLs. 12-18 news + 3-5 circulars.`;
 
           console.log('[fetch-news] Calling Claude API...');
 
@@ -59,7 +91,7 @@ jobs:
             },
             body: JSON.stringify({
               model: 'claude-sonnet-4-20250514',
-              max_tokens: 12000,
+              max_tokens: 16000,
               system: sysPrompt,
               tools: [{ type: 'web_search_20250305', name: 'web_search' }],
               messages: [{
@@ -148,19 +180,39 @@ jobs:
               .trim();
           };
 
-          parsed.news = parsed.news.map(n => ({
-            ...n,
-            title: clean(n.title),
-            titleHi: clean(n.titleHi),
-            summary: clean(n.summary),
-            summaryHi: clean(n.summaryHi),
-            whyItMatters: clean(n.whyItMatters),
-            whyItMattersHi: clean(n.whyItMattersHi),
-            importance: ['must-read','good-to-know','fyi'].includes(n.importance) ? n.importance : 'fyi',
-            sources: (n.sources || []).map(s => ({ name: clean(s.name), url: s.url || '' })),
-            keyNumbers: (n.keyNumbers || []).map(k => ({ label: clean(k.label), value: clean(k.value) })),
-            trend: (n.trend || []).map(t => ({ label: clean(t.label), value: clean(t.value) })),
-          }));
+          // Light clean: remove cite tags but preserve intentional HTML (for deepDive, morningBrief)
+          const cleanHTML = (t) => {
+            if (!t) return '';
+            return t
+              .replace(/<\/?cite[^>]*>/gi, '')
+              .replace(/<\/?antml:cite[^>]*>/gi, '')
+              .replace(/\[\d+(?:,\s*\d+)*\]/g, '')
+              .trim();
+          };
+
+          parsed.news = parsed.news.map(n => {
+            const td = n.trendData || null;
+            return {
+              ...n,
+              title: clean(n.title),
+              titleHi: clean(n.titleHi),
+              summary: clean(n.summary),
+              summaryHi: clean(n.summaryHi),
+              whyItMatters: clean(n.whyItMatters),
+              whyItMattersHi: clean(n.whyItMattersHi),
+              deepDive: cleanHTML(n.deepDive),
+              deepDiveHi: cleanHTML(n.deepDiveHi),
+              importance: ['must-read','good-to-know','fyi'].includes(n.importance) ? n.importance : 'fyi',
+              sources: (n.sources || []).map(s => ({ name: clean(s.name), url: s.url || '' })),
+              keyNumbers: (n.keyNumbers || []).map(k => ({ label: clean(k.label), value: clean(k.value) })),
+              trendData: td ? {
+                metric: clean(td.metric),
+                points: (td.points || []).map(p => ({ date: clean(p.date), value: p.value })),
+                direction: td.direction || 'neutral',
+                summary: clean(td.summary),
+              } : null,
+            };
+          });
 
           const circulars = (parsed.circulars || []).map(c => ({
             ...c,
@@ -171,8 +223,8 @@ jobs:
           }));
 
           const result = {
-            morningBrief: clean(parsed.morningBrief || ''),
-            morningBriefHi: clean(parsed.morningBriefHi || ''),
+            morningBrief: cleanHTML(parsed.morningBrief || ''),
+            morningBriefHi: cleanHTML(parsed.morningBriefHi || ''),
             news: parsed.news,
             circulars,
             fetchedAt: new Date().toISOString(),
