@@ -52,7 +52,12 @@ body.hindi .hi{display:block!important}.hi{display:none!important}body.hindi .en
 .brief-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--copper),#d4923e);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
 .brief-label{font-size:11px;font-weight:700;letter-spacing:0.8px;color:var(--copper);text-transform:uppercase}
 .brief-date{font-size:11px;color:var(--faint);margin-left:auto}
-.brief-text{font-family:'Newsreader',serif;font-size:15.5px;line-height:1.7;color:var(--ink2);font-style:italic}
+.brief-text{font-family:'Newsreader',serif;font-size:15.5px;line-height:1.7;color:var(--ink2)}
+.brief-text b,.brief-text strong{color:var(--ink);font-weight:600}
+.brief-text ul{list-style:none;padding:0;margin:8px 0}
+.brief-text li{padding:6px 0 6px 14px;position:relative;line-height:1.6}
+.brief-text li::before{content:'';position:absolute;left:0;top:14px;width:4px;height:4px;border-radius:50%;background:var(--copper)}
+.brief-text li+li{border-top:1px solid var(--line)}
 body.hindi .brief-text{font-family:'Tiro Devanagari Hindi','Newsreader',serif;font-size:16px}
 .brief-counts{display:flex;gap:12px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
 .brief-ct{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
@@ -140,6 +145,18 @@ body.hindi .nc-summary,body.hindi .nc-ins p{font-family:'Tiro Devanagari Hindi',
 .act-btn:active{transform:scale(0.96)}
 .act-btn.share-btn{border-color:var(--copper);color:var(--copper)}.act-btn.share-btn:active{background:var(--copper-light)}
 .act-btn.save-btn.saved{background:var(--gold);border-color:var(--gold);color:#fff}
+
+/* DEEP DIVE */
+.nc-dd-btn{display:flex;align-items:center;gap:6px;width:100%;padding:12px 0 0;margin-top:14px;border:none;border-top:1px solid var(--line);background:transparent;color:var(--copper);font-size:13px;font-weight:600;font-family:'Libre Franklin',sans-serif;cursor:pointer;transition:all 0.2s;justify-content:center}
+.nc-dd-btn:active{opacity:0.7}
+.nc-dd-btn .dd-arr{transition:transform 0.3s;font-size:11px}
+.nc-dd-btn.dd-open .dd-arr{transform:rotate(90deg)}
+.nc-dd{margin-top:14px;padding:16px 18px;background:linear-gradient(135deg,rgba(184,98,46,0.04),rgba(166,138,62,0.04));border:1px solid rgba(184,98,46,0.12);border-radius:var(--rs);animation:sd 0.3s ease}
+.nc-dd .dd-label{font-size:10px;font-weight:700;letter-spacing:0.8px;color:var(--copper);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.nc-dd .dd-content{font-family:'Newsreader',serif;font-size:14.5px;line-height:1.8;color:var(--ink2)}
+.nc-dd .dd-content p{margin-bottom:10px}.nc-dd .dd-content p:last-child{margin-bottom:0}
+.nc-dd .dd-content b,.nc-dd .dd-content strong{color:var(--ink);font-weight:600}
+body.hindi .nc-dd .dd-content{font-family:'Tiro Devanagari Hindi','Newsreader',serif;font-size:15px;line-height:1.9}
 
 /* CIRCULAR */
 .circ{background:var(--paper);border-radius:var(--r);border:1px solid var(--line);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
@@ -268,7 +285,7 @@ const BCOL={'LATEST':'#b84040','ACTION NEEDED':'#b8622e','NEW':'#3568a8','GAME C
 const NC=['c-copper','c-teal','c-blue','c-gold'];
 const IMP_LABELS={'must-read':'Must Read','good-to-know':'Good to Know','fyi':'FYI'};
 
-let S={screen:'init',user:JSON.parse(localStorage.getItem('bp_user')||'null'),token:localStorage.getItem('bp_token')||'',plan:localStorage.getItem('bp_plan')||'free',news:JSON.parse(localStorage.getItem('bp_data')||'[]'),circulars:JSON.parse(localStorage.getItem('bp_circ')||'[]'),brief:localStorage.getItem('bp_brief')||'',briefHi:localStorage.getItem('bp_briefhi')||'',readIds:new Set(JSON.parse(localStorage.getItem('bp_read')||'[]')),savedIds:new Set(JSON.parse(localStorage.getItem('bp_saved')||'[]')),checkedActions:new Set(JSON.parse(localStorage.getItem('bp_checks')||'[]')),lastFetch:localStorage.getItem('bp_ts')||null,cat:'all',open:new Set(),fetching:false,progress:'',error:null,settings:false,hindi:localStorage.getItem('bp_hindi')==='1'};
+let S={screen:'init',user:JSON.parse(localStorage.getItem('bp_user')||'null'),token:localStorage.getItem('bp_token')||'',plan:localStorage.getItem('bp_plan')||'free',news:JSON.parse(localStorage.getItem('bp_data')||'[]'),circulars:JSON.parse(localStorage.getItem('bp_circ')||'[]'),brief:localStorage.getItem('bp_brief')||'',briefHi:localStorage.getItem('bp_briefhi')||'',readIds:new Set(JSON.parse(localStorage.getItem('bp_read')||'[]')),savedIds:new Set(JSON.parse(localStorage.getItem('bp_saved')||'[]')),checkedActions:new Set(JSON.parse(localStorage.getItem('bp_checks')||'[]')),lastFetch:localStorage.getItem('bp_ts')||null,cat:'all',open:new Set(),ddOpen:new Set(),fetching:false,progress:'',error:null,settings:false,hindi:localStorage.getItem('bp_hindi')==='1'};
 function set(u){Object.assign(S,u);render();}
 function esc(s){return !s?'':String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function stale(){return !S.lastFetch||(Date.now()-new Date(S.lastFetch).getTime())>6*36e5;}
@@ -279,6 +296,8 @@ function markRead(id){S.readIds.add(id);localStorage.setItem('bp_read',JSON.stri
 function toggleSave(id){if(S.savedIds.has(id)){S.savedIds.delete(id);toast('Removed');}else{S.savedIds.add(id);toast('Saved');}localStorage.setItem('bp_saved',JSON.stringify([...S.savedIds]));set({});}
 function toggleCheck(key){if(S.checkedActions.has(key))S.checkedActions.delete(key);else S.checkedActions.add(key);localStorage.setItem('bp_checks',JSON.stringify([...S.checkedActions]));set({});}
 function toggleHindi(){S.hindi=!S.hindi;localStorage.setItem('bp_hindi',S.hindi?'1':'0');document.body.classList.toggle('hindi',S.hindi);set({});}
+function toggleDD(id){const next=new Set(S.ddOpen);if(next.has(id))next.delete(id);else next.add(id);set({ddOpen:next});}
+function formatDate(isoDate){if(!isoDate)return'';const d=new Date(isoDate);const now=new Date();const diffDays=Math.floor((now-d)/86400000);if(diffDays===0)return'Today';if(diffDays===1)return'Yesterday';if(diffDays<7)return diffDays+' days ago';return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
 function toast(msg){const d=document.createElement('div');d.className='toast';d.textContent=msg;document.body.appendChild(d);setTimeout(()=>d.remove(),2500);}
 
 // Get tab for a news item
@@ -291,7 +310,7 @@ async function shareCard(n){
   const btn=document.querySelector(`[data-share="${n.id}"]`);if(btn)btn.classList.add('busy');
   const c=document.getElementById('shareRender');const cc=CAT_COLORS[n.category]||'#b8622e';const bc=bcol(n.badge);const imp=n.importance||'fyi';
   const title=S.hindi&&n.titleHi?n.titleHi:n.title;const summary=S.hindi&&n.summaryHi?n.summaryHi:n.summary;const wim=S.hindi&&n.whyItMattersHi?n.whyItMattersHi:n.whyItMatters;
-  c.innerHTML=`<div class="share-card" id="sc_${n.id}"><div class="sc-accent" style="background:linear-gradient(90deg,${cc},${cc}88)"></div><div class="sc-top"><span class="sc-cat">${esc(CAT_LABELS[n.category]||n.category)}</span><span class="sc-bdg" style="background:${bc}">${esc(n.badge)}</span><span class="sc-imp ${imp}">${IMP_LABELS[imp]||'FYI'}</span><span class="sc-dt">${esc(n.date)}</span></div><div class="sc-title" ${S.hindi?'style="font-family:Tiro Devanagari Hindi,Newsreader,serif"':''}>${esc(title)}</div><div class="sc-summary" ${S.hindi?'style="font-family:Tiro Devanagari Hindi,Libre Franklin,sans-serif"':''}>${esc(summary)}</div>${n.keyNumbers&&n.keyNumbers.length?`<div class="sc-nums">${n.keyNumbers.map((k,i)=>`<div class="sc-nm"><div class="v">${esc(k.value)}</div><div class="l">${esc(k.label)}</div><style>.share-card .sc-nm:nth-child(${i+1})::after{background:${[cc,'#2a7a6d','#3568a8','#a68a3e'][i%4]}}</style></div>`).join('')}</div>`:''}${wim?`<div class="sc-insight"><div class="lb">🏦 ${S.hindi?'आपके लिए क्यों ज़रूरी':'Why It Matters'}</div><p ${S.hindi?'style="font-family:Tiro Devanagari Hindi,sans-serif"':''}>${esc(wim)}</p></div>`:''}<div class="sc-footer"><div class="brand"><div class="logo">₹</div><span>Banking Pulse</span></div><div class="url">bankingpulse.app</div></div></div>`;
+  c.innerHTML=`<div class="share-card" id="sc_${n.id}"><div class="sc-accent" style="background:linear-gradient(90deg,${cc},${cc}88)"></div><div class="sc-top"><span class="sc-cat">${esc(CAT_LABELS[n.category]||n.category)}</span><span class="sc-bdg" style="background:${bc}">${esc(n.badge)}</span><span class="sc-imp ${imp}">${IMP_LABELS[imp]||'FYI'}</span><span class="sc-dt">${formatDate(n.date)}</span></div><div class="sc-title" ${S.hindi?'style="font-family:Tiro Devanagari Hindi,Newsreader,serif"':''}>${esc(title)}</div><div class="sc-summary" ${S.hindi?'style="font-family:Tiro Devanagari Hindi,Libre Franklin,sans-serif"':''}>${esc(summary)}</div>${n.keyNumbers&&n.keyNumbers.length?`<div class="sc-nums">${n.keyNumbers.map((k,i)=>`<div class="sc-nm"><div class="v">${esc(k.value)}</div><div class="l">${esc(k.label)}</div><style>.share-card .sc-nm:nth-child(${i+1})::after{background:${[cc,'#2a7a6d','#3568a8','#a68a3e'][i%4]}}</style></div>`).join('')}</div>`:''}${wim?`<div class="sc-insight"><div class="lb">🏦 ${S.hindi?'आपके लिए क्यों ज़रूरी':'Why It Matters'}</div><p ${S.hindi?'style="font-family:Tiro Devanagari Hindi,sans-serif"':''}>${esc(wim)}</p></div>`:''}<div class="sc-footer"><div class="brand"><div class="logo">₹</div><span>Banking Pulse</span></div><div class="url">bankingpulse.app</div></div></div>`;
   try{await new Promise(r=>setTimeout(r,100));const el=document.getElementById(`sc_${n.id}`);const canvas=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:'#faf8f5',logging:false});canvas.toBlob(async(blob)=>{if(!blob){toast('Error');if(btn)btn.classList.remove('busy');return;}const file=new File([blob],`bp-${n.id}.png`,{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({title:n.title,text:`${n.title} — bankingpulse.app`,files:[file]});}catch(e){if(e.name!=='AbortError')dlBlob(blob,`bp-${n.id}.png`);}}else{dlBlob(blob,`bp-${n.id}.png`);toast('Image saved!');}if(btn)btn.classList.remove('busy');c.innerHTML='';},'image/png');}catch(e){console.error(e);toast('Share failed');if(btn)btn.classList.remove('busy');c.innerHTML='';}
 }
 function dlBlob(b,n){const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);}
@@ -310,9 +329,10 @@ async function fetchNews(){
     const rows=await resp.json();
     if(!rows.length||!rows[0].data)throw new Error('No news available yet. Check back soon!');
     const d=rows[0].data;
-    const news=(d.news||[]).map(n=>({...n,title:cleanAI(n.title),titleHi:cleanAI(n.titleHi),summary:cleanAI(n.summary),summaryHi:cleanAI(n.summaryHi),whyItMatters:cleanAI(n.whyItMatters),whyItMattersHi:cleanAI(n.whyItMattersHi),importance:(['must-read','good-to-know','fyi'].includes(n.importance))?n.importance:'fyi',sources:(n.sources||[]).map(s=>({name:cleanAI(s.name),url:s.url||''})),keyNumbers:(n.keyNumbers||[]).map(k=>({label:cleanAI(k.label),value:cleanAI(k.value)})),trend:(n.trend||[]).map(t=>({label:cleanAI(t.label),value:cleanAI(t.value)}))}));
+    const cleanDD=(t)=>{if(!t)return'';return t.replace(/<\/?cite[^>]*>/gi,'').replace(/<\/?antml:cite[^>]*>/gi,'').replace(/\[\d+(?:,\s*\d+)*\]/g,'').replace(/\s+/g,' ').trim();};
+    const news=(d.news||[]).map(n=>{const td=n.trendData||null;return{...n,title:cleanAI(n.title),titleHi:cleanAI(n.titleHi),summary:cleanAI(n.summary),summaryHi:cleanAI(n.summaryHi),whyItMatters:cleanAI(n.whyItMatters),whyItMattersHi:cleanAI(n.whyItMattersHi),deepDive:cleanDD(n.deepDive),deepDiveHi:cleanDD(n.deepDiveHi),importance:(['must-read','good-to-know','fyi'].includes(n.importance))?n.importance:'fyi',sources:(n.sources||[]).map(s=>({name:cleanAI(s.name),url:s.url||''})),keyNumbers:(n.keyNumbers||[]).map(k=>({label:cleanAI(k.label),value:cleanAI(k.value)})),trendData:td?{metric:cleanAI(td.metric),points:(td.points||[]).map(p=>({date:cleanAI(p.date),value:p.value})),direction:td.direction||'neutral',summary:cleanAI(td.summary)}:null,trend:(n.trend||[]).map(t=>({label:cleanAI(t.label),value:cleanAI(t.value)}))}});
     const circs=(d.circulars||[]).map(c=>({...c,title:cleanAI(c.title),titleHi:cleanAI(c.titleHi),summary:cleanAI(c.summary),summaryHi:cleanAI(c.summaryHi),actions:(c.actions||[]).map(cleanAI),actionsHi:(c.actionsHi||[]).map(cleanAI)}));
-    const brief=cleanAI(d.morningBrief||'');const briefHi=cleanAI(d.morningBriefHi||'');
+    const brief=cleanDD(d.morningBrief||'');const briefHi=cleanDD(d.morningBriefHi||'');
     const newIds=new Set(news.map(n=>n.id));const older=S.news.filter(n=>!newIds.has(n.id)&&!n.locked);const all=[...news,...older].slice(0,80);
     const now=new Date().toISOString();
     localStorage.setItem('bp_data',JSON.stringify(all));localStorage.setItem('bp_ts',now);
@@ -374,7 +394,7 @@ function rApp(){
     return`<button class="tab ${S.cat===t.id?'on':''}" data-c="${t.id}">${l}</button>`;
   }).join('')}</div></div>
 
-  ${briefTxt&&!isAction?`<div class="brief"><div class="brief-accent"></div><div class="brief-inner"><div class="brief-top"><div class="brief-icon">☀️</div><span class="brief-label">${S.hindi?'सुबह की जानकारी':'Morning Brief'}</span><span class="brief-date">${today}</span></div><p class="brief-text">${esc(briefTxt)}</p><div class="brief-counts"><span class="brief-ct"><span class="dot mr"></span>${mustC} ${S.hindi?'ज़रूरी':'Must Read'}</span><span class="brief-ct"><span class="dot gk"></span>${goodC} ${S.hindi?'जानकारी':'Good to Know'}</span><span class="brief-ct"><span class="dot fy"></span>${fyiC} FYI</span></div></div></div>`:''}
+  ${briefTxt&&!isAction?`<div class="brief"><div class="brief-accent"></div><div class="brief-inner"><div class="brief-top"><div class="brief-icon">☀️</div><span class="brief-label">${S.hindi?'सुबह की जानकारी':'Morning Brief'}</span><span class="brief-date">${today}</span></div><div class="brief-text">${briefTxt}</div><div class="brief-counts"><span class="brief-ct"><span class="dot mr"></span>${mustC} ${S.hindi?'ज़रूरी':'Must Read'}</span><span class="brief-ct"><span class="dot gk"></span>${goodC} ${S.hindi?'जानकारी':'Good to Know'}</span><span class="brief-ct"><span class="dot fy"></span>${fyiC} FYI</span></div></div></div>`:''}
 
   <div class="stat"><span><span class="dot ${fresh?'':'stale'}${S.error?' err':''}"></span>${S.hindi?'अपडेट':'Updated'} ${ago(S.lastFetch)}</span><span>${isAction?actC+' items':fl.length+' '+(S.hindi?'खबरें':'stories')}</span></div>
   ${S.error?`<div class="err-bar">⚠ ${esc(S.error)}</div>`:''}${S.fetching?`<div class="prog"><div class="dp"><span></span><span></span><span></span></div>${esc(S.progress)}</div>`:''}
@@ -411,23 +431,48 @@ function rActionTab(){
   return html;
 }
 
+function rTrend(n){
+  // New trendData format: sparkline SVG for 4+ points, trend pill otherwise
+  const td=n.trendData;
+  if(td){
+    const pts=td.points||[];
+    const dir=td.direction||'neutral';
+    const dirColor=dir==='up'?'var(--teal)':dir==='down'?'var(--copper)':'var(--blue)';
+    const dirArrow=dir==='up'?'↑':dir==='down'?'↓':'→';
+    if(pts.length>=4){
+      // Sparkline SVG
+      const vals=pts.map(p=>p.value);
+      const mn=Math.min(...vals),mx=Math.max(...vals),range=mx-mn||1;
+      const w=200,h=50,pad=4;
+      const points=pts.map((p,i)=>{const x=pad+i*((w-2*pad)/(pts.length-1));const y=pad+(1-(p.value-mn)/range)*(h-2*pad);return`${x},${y}`;}).join(' ');
+      return`<div class="nc-trend"><div class="tr-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> ${esc(td.metric||'')} <span style="color:${dirColor};font-size:11px;font-weight:600;letter-spacing:0">${dirArrow} ${esc(td.summary||'')}</span></div><svg viewBox="0 0 ${w} ${h+18}" width="100%" height="auto" style="display:block;margin-top:6px"><defs><linearGradient id="tg_${dir}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${dirColor}" stop-opacity="0.15"/><stop offset="100%" stop-color="${dirColor}" stop-opacity="0"/></linearGradient></defs><polygon points="${pad},${h-pad} ${points} ${w-pad},${h-pad}" fill="url(#tg_${dir})" /><polyline points="${points}" fill="none" stroke="${dirColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>${pts.map((p,i)=>{const x=pad+i*((w-2*pad)/(pts.length-1));const y=pad+(1-(p.value-mn)/range)*(h-2*pad);return`<circle cx="${x}" cy="${y}" r="3" fill="${dirColor}" stroke="var(--paper)" stroke-width="1.5"/><text x="${x}" y="${h+12}" text-anchor="middle" fill="var(--muted)" font-size="8" font-family="JetBrains Mono,monospace">${esc(p.date)}</text>`;}).join('')}</svg></div>`;
+    }
+    // Trend pill for fewer points
+    if(td.summary){
+      return`<div style="margin-bottom:16px"><span style="display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;background:${dir==='up'?'var(--teal-light)':dir==='down'?'rgba(184,98,46,0.08)':'var(--blue-light)'};border:1px solid ${dir==='up'?'rgba(42,122,109,0.15)':dir==='down'?'rgba(184,98,46,0.15)':'rgba(53,104,168,0.15)'};font-size:12px;font-weight:600;color:${dirColor}"><span>${dirArrow}</span>${esc(td.metric?td.metric+': ':'')}${esc(td.summary)}</span></div>`;
+    }
+    return'';
+  }
+  // Fallback: old trend format with bars (for legacy data)
+  if(!n.trend||n.trend.length<2)return'';
+  const vals=n.trend.map(t=>{const m=t.value.replace(/[^\d.]/g,'');return parseFloat(m)||0;});
+  const mx=Math.max(...vals),mn=Math.min(...vals),range=mx-mn||1;
+  return`<div class="nc-trend"><div class="tr-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> ${S.hindi?'रुझान':'Trend'}</div><div class="tr-bars">${n.trend.map((t,i)=>{const v=vals[i];const pct=20+((v-mn)/range)*80;const prev=i>0?vals[i-1]:v;const cls=v>prev?'up':v<prev?'dn':'nt';return`<div class="tr-bar"><div class="bv">${esc(t.value)}</div><div class="bar ${cls}" style="height:${pct}%"></div><div class="bl">${esc(t.label)}</div></div>`;}).join('')}</div></div>`;
+}
+
 function rCard(n,isRd){
   if(n.locked){
     const title=S.hindi&&n.titleHi?n.titleHi:n.title;const imp=n.importance||'fyi';const bc=bcol(n.badge);
-    return`<div class="nc locked"><div class="imp-strip ${imp}"></div><div class="nc-h"><div class="nc-m"><span class="nc-cat">${esc(CAT_LABELS[n.category]||n.category)}</span><span class="nc-badge" style="background:${bc}">${esc(n.badge)}</span><span class="nc-imp ${imp}">${IMP_LABELS[imp]||'FYI'}</span><span class="nc-date">${esc(n.date||'')}</span></div><div class="nc-t"><span>${esc(title)}</span><span style="color:var(--copper);font-size:11px;font-weight:600">🔒 Pro</span></div></div></div>`;
+    return`<div class="nc locked"><div class="imp-strip ${imp}"></div><div class="nc-h"><div class="nc-m"><span class="nc-cat">${esc(CAT_LABELS[n.category]||n.category)}</span><span class="nc-badge" style="background:${bc}">${esc(n.badge)}</span><span class="nc-imp ${imp}">${IMP_LABELS[imp]||'FYI'}</span><span class="nc-date">${formatDate(n.date)}</span></div><div class="nc-t"><span>${esc(title)}</span><span style="color:var(--copper);font-size:11px;font-weight:600">🔒 Pro</span></div></div></div>`;
   }
   const x=S.open.has(n.id),bc=bcol(n.badge),imp=n.importance||'fyi',isSaved=S.savedIds.has(n.id);
   const title=S.hindi&&n.titleHi?n.titleHi:n.title;
   const summary=S.hindi&&n.summaryHi?n.summaryHi:n.summary;
   const wim=S.hindi&&n.whyItMattersHi?n.whyItMattersHi:n.whyItMatters;
-  const hasTrend=n.trend&&n.trend.length>=2;
-  let trendHtml='';
-  if(hasTrend&&x){
-    const vals=n.trend.map(t=>{const m=t.value.replace(/[^\d.]/g,'');return parseFloat(m)||0;});
-    const mx=Math.max(...vals),mn=Math.min(...vals),range=mx-mn||1;
-    trendHtml=`<div class="nc-trend"><div class="tr-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> ${S.hindi?'रुझान':'Trend'}</div><div class="tr-bars">${n.trend.map((t,i)=>{const v=vals[i];const pct=20+((v-mn)/range)*80;const prev=i>0?vals[i-1]:v;const cls=v>prev?'up':v<prev?'dn':'nt';return`<div class="tr-bar"><div class="bv">${esc(t.value)}</div><div class="bar ${cls}" style="height:${pct}%"></div><div class="bl">${esc(t.label)}</div></div>`;}).join('')}</div></div>`;
-  }
-  return`<div class="nc ${x?'open':''} ${isRd?'rd':''}"><div class="imp-strip ${imp}"></div><div class="nc-h" data-t="${esc(n.id)}"><div class="nc-m"><span class="nc-cat">${esc(CAT_LABELS[n.category]||n.category)}</span><span class="nc-badge" style="background:${bc}">${esc(n.badge)}</span><span class="nc-imp ${imp}">${IMP_LABELS[imp]||'FYI'}</span><span class="nc-date">${esc(n.date||'')}</span></div><div class="nc-t"><span>${esc(title)}</span><span class="arr">▾</span></div>${summary?`<div class="nc-preview">${esc(summary)}</div>`:''}${n.keyNumbers&&n.keyNumbers.length?`<div class="nc-pills">${n.keyNumbers.slice(0,3).map(k=>`<span class="nc-pill"><span class="pv">${esc(k.value)}</span><span class="pl">${esc(k.label)}</span></span>`).join('')}</div>`:''}${wim?`<div class="nc-wim-peek">🏦 ${S.hindi?'ज़रूरी क्यों → टैप करें':'Why it matters → tap to read'}</div>`:''}</div>${x?`<div class="nc-b"><p class="nc-summary">${esc(summary)}</p>${n.keyNumbers&&n.keyNumbers.length?`<div class="nc-nums">${n.keyNumbers.map((k,i)=>`<div class="nm ${NC[i%4]}"><div class="v">${esc(k.value)}</div><div class="l">${esc(k.label)}</div></div>`).join('')}</div>`:''}${trendHtml}${wim?`<div class="nc-ins"><div class="lb">🏦 ${S.hindi?'आपके लिए क्यों ज़रूरी':'Why It Matters'}</div><p>${esc(wim)}</p></div>`:''}<div class="nc-foot"><div class="nc-src"><span class="lb">Sources</span>${(n.sources||[]).map(s=>`<a class="sc" href="${esc(s.url||'#')}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join('')}</div><div class="nc-actions"><button class="act-btn save-btn ${isSaved?'saved':''}" data-save="${esc(n.id)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>${isSaved?'✓':S.hindi?'सेव':'Save'}</button><button class="act-btn share-btn" data-share="${esc(n.id)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>${S.hindi?'शेयर':'Share'}</button></div></div></div>`:''}</div>`;
+  const dd=S.hindi&&n.deepDiveHi?n.deepDiveHi:n.deepDive;
+  const ddExpanded=S.ddOpen.has(n.id);
+  const trendHtml=x?rTrend(n):'';
+  return`<div class="nc ${x?'open':''} ${isRd?'rd':''}"><div class="imp-strip ${imp}"></div><div class="nc-h" data-t="${esc(n.id)}"><div class="nc-m"><span class="nc-cat">${esc(CAT_LABELS[n.category]||n.category)}</span><span class="nc-badge" style="background:${bc}">${esc(n.badge)}</span><span class="nc-imp ${imp}">${IMP_LABELS[imp]||'FYI'}</span><span class="nc-date">${formatDate(n.date)}</span></div><div class="nc-t"><span>${esc(title)}</span><span class="arr">▾</span></div>${summary?`<div class="nc-preview">${esc(summary)}</div>`:''}${n.keyNumbers&&n.keyNumbers.length?`<div class="nc-pills">${n.keyNumbers.slice(0,3).map(k=>`<span class="nc-pill"><span class="pv">${esc(k.value)}</span><span class="pl">${esc(k.label)}</span></span>`).join('')}</div>`:''}${wim?`<div class="nc-wim-peek">🏦 ${S.hindi?'ज़रूरी क्यों → टैप करें':'Why it matters → tap to read'}</div>`:''}</div>${x?`<div class="nc-b"><p class="nc-summary">${esc(summary)}</p>${n.keyNumbers&&n.keyNumbers.length?`<div class="nc-nums">${n.keyNumbers.map((k,i)=>`<div class="nm ${NC[i%4]}"><div class="v">${esc(k.value)}</div><div class="l">${esc(k.label)}</div></div>`).join('')}</div>`:''}${trendHtml}${wim?`<div class="nc-ins"><div class="lb">🏦 ${S.hindi?'आपके लिए क्यों ज़रूरी':'Why It Matters'}</div><p>${esc(wim)}</p></div>`:''}${dd?`<button class="nc-dd-btn ${ddExpanded?'dd-open':''}" data-dd="${esc(n.id)}"><span class="dd-arr">→</span> ${S.hindi?'विस्तार से समझें':'Explain This'}</button>${ddExpanded?`<div class="nc-dd"><div class="dd-label">☕ ${S.hindi?'विस्तार से':'Deep Dive'}</div><div class="dd-content">${dd}</div></div>`:''}`:''}<div class="nc-foot"><div class="nc-src"><span class="lb">Sources</span>${(n.sources||[]).map(s=>`<a class="sc" href="${esc(s.url||'#')}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join('')}</div><div class="nc-actions"><button class="act-btn save-btn ${isSaved?'saved':''}" data-save="${esc(n.id)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>${isSaved?'✓':S.hindi?'सेव':'Save'}</button><button class="act-btn share-btn" data-share="${esc(n.id)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>${S.hindi?'शेयर':'Share'}</button></div></div></div>`:''}</div>`;
 }
 
 function rSettings(){
@@ -455,6 +500,7 @@ function bApp(){
   document.querySelectorAll('[data-t]').forEach(el=>el.addEventListener('click',()=>{const id=el.dataset.t;const next=new Set(S.open);if(next.has(id)){next.delete(id);markRead(id);}else{next.add(id);}set({open:next});}));
   document.querySelectorAll('[data-save]').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();toggleSave(b.dataset.save);});});
   document.querySelectorAll('[data-share]').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();const item=S.news.find(n=>n.id===b.dataset.share);if(item)shareCard(item);});});
+  document.querySelectorAll('[data-dd]').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();toggleDD(b.dataset.dd);});});
   document.querySelectorAll('[data-check]').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();toggleCheck(b.dataset.check);});});
   document.getElementById('ov')?.addEventListener('click',e=>{if(e.target.id==='ov')set({settings:false});});
   document.getElementById('mc')?.addEventListener('click',()=>set({settings:false}));
