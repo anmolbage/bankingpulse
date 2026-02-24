@@ -12,6 +12,25 @@ jobs:
     timeout-minutes: 5
 
     steps:
+      - name: Verify anon key can read news_cache
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          # Test read with anon key (same as frontend uses)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "$SUPABASE_URL/rest/v1/news_cache?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+          if [ "$STATUS" != "200" ]; then
+            echo "::warning::Anon key cannot read news_cache (HTTP $STATUS). Frontend will fail."
+            echo "::warning::Run this SQL in Supabase Dashboard → SQL Editor:"
+            echo "::warning::  CREATE POLICY \"Allow public read\" ON news_cache FOR SELECT USING (true);"
+          else
+            echo "✓ Anon key can read news_cache"
+          fi
+
       - name: Fetch news from Claude and store in Supabase
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
