@@ -48,6 +48,15 @@ jobs:
 
           Return 8-10 news items + 2-3 circulars. KEEP TOTAL RESPONSE SHORT — under 12000 characters of JSON.
           Categories: rbi, banking, msme, digital, rrb, markets, budget, nabard
+
+          DIVERSITY RULE: Your 8-10 stories MUST include:
+          - Max 3 stories from RBI circulars/notifications
+          - Max 2 stories from NABARD
+          - At least 2 stories from general banking news (fraud, mergers, quarterly results, market moves)
+          - At least 1 government scheme or policy story
+          - At least 1 MSME/digital/fintech story
+          If a major event happened today (large fraud, bank failure, major policy announcement, FM/RBI Governor statement), it MUST be included as must-read even if it means dropping a routine circular.
+          PRIORITY OVERRIDE: Breaking news and high-impact events (fraud over 100 crore, RBI Governor statements, FM directives to banks, bank stock crashes) always take priority over routine circulars and notifications. A 590 crore fraud at a bank is more important than a routine NABARD refinance circular.
           Importance: "must-read" (will change your branch operations), "good-to-know" (useful context), "fyi" (interesting but won't change your day)
           Badges: LATEST, BREAKING, ACTION NEEDED, GAME CHANGER, NEW, UPDATE, IMPORTANT, POLICY
           keyNumbers: Include 2-4 key numbers per story (rate, amount, date, count)
@@ -91,20 +100,22 @@ jobs:
               tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
               messages: [{
                 role: 'user',
-                content: `Search using these mandatory queries:
-          1. RBI circular notification today
-          2. NABARD circular latest
+                content: `Search using these mandatory queries (run breaking news queries FIRST):
+          1. Indian bank fraud scandal breaking news today
+          2. finance minister banks RBI governor statement today
           3. Indian banking news today
-          4. MSME lending credit India latest
-          5. digital payments UPI fintech India
-          6. regional rural bank gramin bank news
-          7. Indian bank fraud investigation latest
-          8. RBI repo rate MCLR interest rate
-          9. government banking scheme India latest
-          10. PSB public sector bank reform EASE
-          11. KCC kisan credit card agricultural credit
-          12. CPI inflation GDP India data
-          13. bank mis-selling RBI guidelines
+          4. RBI circular notification today
+          5. NABARD circular latest
+          6. MSME lending credit India latest
+          7. digital payments UPI fintech India
+          8. regional rural bank gramin bank news
+          9. Indian bank fraud investigation latest
+          10. RBI repo rate MCLR interest rate
+          11. government banking scheme India latest
+          12. PSB public sector bank reform EASE
+          13. KCC kisan credit card agricultural credit
+          14. CPI inflation GDP India data
+          15. bank mis-selling RBI guidelines
 
           Prioritize results from: rbi.org.in, pib.gov.in, nabard.org, financialservices.gov.in as primary sources.
 
