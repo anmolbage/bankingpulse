@@ -96,7 +96,24 @@ jobs:
               tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
               messages: [{
                 role: 'user',
-                content: 'Search for latest Indian banking news + recent RBI/NABARD/DFS circulars. Include Hindi translations and trend data. 8-10 news + 2-3 circulars. Keep summaries short (2-3 lines). Deep dives only for top 2 must-reads (1 paragraph each). Total JSON must be under 12000 characters. Clean JSON only — no extra text before or after.'
+                content: `Search using these mandatory queries:
+          1. RBI circular notification today
+          2. NABARD circular latest
+          3. Indian banking news today
+          4. MSME lending credit India latest
+          5. digital payments UPI fintech India
+          6. regional rural bank gramin bank news
+          7. Indian bank fraud investigation latest
+          8. RBI repo rate MCLR interest rate
+          9. government banking scheme India latest
+          10. PSB public sector bank reform EASE
+          11. KCC kisan credit card agricultural credit
+          12. CPI inflation GDP India data
+          13. bank mis-selling RBI guidelines
+
+          Prioritize results from: rbi.org.in, pib.gov.in, nabard.org, financialservices.gov.in as primary sources.
+
+          Also search for recent RBI/NABARD/DFS circulars. Include Hindi translations and trend data. 8-10 news + 2-3 circulars. Keep summaries short (2-3 lines). Deep dives only for top 2 must-reads (1 paragraph each). Total JSON must be under 12000 characters. Clean JSON only — no extra text before or after.`
               }],
             }),
           });
@@ -128,7 +145,16 @@ jobs:
             if (!match) throw new Error('No JSON found');
             parsed = JSON.parse(match[0]);
           } catch(e1) {
-            console.log('[fetch-news] Direct parse failed, attempting repair...');
+            // Fallback: strip markdown fences, find first { and last }
+            console.log('[fetch-news] Direct parse failed, trying brace extraction...');
+            try {
+              const stripped = txt.replace(/\`\`\`json\s*/g, '').replace(/\`\`\`\s*/g, '').trim();
+              const firstBrace = stripped.indexOf('{');
+              const lastBrace = stripped.lastIndexOf('}');
+              if (firstBrace === -1 || lastBrace <= firstBrace) throw new Error('No JSON braces found');
+              parsed = JSON.parse(stripped.substring(firstBrace, lastBrace + 1));
+            } catch(e1b) {
+            console.log('[fetch-news] Brace extraction failed, attempting repair...');
             try {
               // Find the JSON start
               const start = txt.indexOf('"morningBrief"');
@@ -187,8 +213,10 @@ jobs:
               parsed = JSON.parse(jsonStr);
             } catch(e2) {
               console.error('[fetch-news] JSON repair failed:', e2.message);
+              console.error('[fetch-news] Raw response length:', txt.length);
               console.error('[fetch-news] Raw text (first 1000 chars):', txt.substring(0, 1000));
               process.exit(1);
+            }
             }
           }
           
