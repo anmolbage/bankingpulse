@@ -58,23 +58,20 @@ jobs:
           If fewer than 4 data points exist, return: {"metric":"string","points":[],"direction":"string","summary":"string"} with just the summary text like "MCLR down 31 bps since Oct".
           NEVER return empty label/value objects like {"label":"","value":""}.
 
-          DEEP DIVE (REQUIRED for first 2 must-read stories):
-          You MUST include a "deepDive" field for the first 2 stories with importance "must-read". This is not optional.
-          Format: ONE short paragraph, 3-4 sentences, wrapped in <p> tag. Cover what happened + one concrete action.
-          Example: "<p>RBI cut repo by 25 bps to 6.25%, first cut since 2020. Your MCLR-linked loans should reprice within the cycle. Check with HO if your branch's lending rates have been updated — borrowers will start asking.</p>"
-          Also include "deepDiveHi" in Hindi with same structure.
-          For all other stories, omit deepDive/deepDiveHi.
+          DEEP DIVE (REQUIRED for every story):
+          For each story, generate a "deepDive" field containing a 4-6 paragraph HTML explanation. Write like a knowledgeable colleague explaining over chai. Include: what exactly happened, which banks/institutions are affected, what was the rule/rate before, what this means for YOUR branch specifically with concrete actions, any deadlines to watch. Use you/your language. Explain jargon in parentheses.
+          Wrap each paragraph in <p> tags. Also include "deepDiveHi" in Hindi with same structure.
 
           RESPOND IN VALID JSON ONLY. Structure:
           {"morningBrief":"...","morningBriefHi":"...","news":[{...}],"circulars":[{...}]}
-          News fields: id, category, badge, importance, title, titleHi, summary, summaryHi, whyItMatters, whyItMattersHi, keyNumbers[{label,value}], trendData (optional), sources[{name,url}], date, deepDive (optional), deepDiveHi (optional)
+          News fields: id, category, badge, importance, title, titleHi, summary, summaryHi, whyItMatters, whyItMattersHi, keyNumbers[{label,value}], trendData (optional), sources[{name,url}], date, deepDive, deepDiveHi
           Circular fields: id, issuer, number, date, title, titleHi, summary, summaryHi, deadline, actions[], actionsHi[], url
 
           CRITICAL RULES:
           - NO cite tags, NO [1] references
           - HTML allowed ONLY in morningBrief, morningBriefHi, deepDive, deepDiveHi
           - 8-10 news + 2-3 circulars. BE CONCISE.
-          - MUST include deepDive + deepDiveHi for first 2 must-read news items
+          - MUST include deepDive + deepDiveHi for every news item (4-6 paragraphs each)
           - MUST include trendData for at least 2 news items (use full points array if 4+ data points available, otherwise include direction + summary only)
           - Summaries must sound like a colleague talking, NOT a news wire. Use "you/your" and be specific about branch impact.`;
 
@@ -111,7 +108,7 @@ jobs:
 
           Prioritize results from: rbi.org.in, pib.gov.in, nabard.org, financialservices.gov.in as primary sources.
 
-          Also search for recent RBI/NABARD/DFS circulars. Include Hindi translations and trend data. 8-10 news + 2-3 circulars. Keep summaries short (2-3 lines). Deep dives only for top 2 must-reads (1 paragraph each). Total JSON must be under 12000 characters. Clean JSON only — no extra text before or after.`
+          Also search for recent RBI/NABARD/DFS circulars. Include Hindi translations and trend data. 8-10 news + 2-3 circulars. Keep summaries short (2-3 lines). Include deepDive (4-6 paragraphs) for every story. Clean JSON only — no extra text before or after.`
               }],
             }),
           });
