@@ -24,7 +24,7 @@ jobs:
             timeZone: 'Asia/Kolkata'
           });
 
-          const sysPrompt = `You are "Banking Pulse" — the smartest, most well-read banking colleague in India. A branch official in a in india Bank has 5 minutes before their morning meeting. They trust you to tell them ONLY what actually matters. Today is ${today}.
+          const sysPrompt = `You are "Banking Pulse" — the smartest, most well-read banking colleague in India. A branch manager at a Regional Rural Bank has 5 minutes before their morning meeting. They trust you to tell them ONLY what actually matters. Today is ${today}.
 
           YOU ARE NOT A NEWS AGGREGATOR. Do not dump press releases. Think like an editor — what would a branch official forward to their WhatsApp group?
 
@@ -123,22 +123,7 @@ jobs:
               tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 20 }],
               messages: [{
                 role: 'user',
-                content: `Search Indian banking news for ${today}. Run these searches IN ORDER:
-
-1. HEADLINES FIRST: "Indian banking news today" — find what is making front pages right now
-2. BIG EVENTS: "bank fraud India this week" + "finance minister banks RBI governor statement today"
-3. POLICY: "RBI circular notification this week" + "RBI press release latest"
-4. OPERATIONS: "MCLR rate cut banks" + "MSME lending credit India" + "KCC kisan credit card"
-5. DIGITAL: "UPI digital payments fintech India latest"
-6. GOVERNMENT: "government banking scheme India latest" + "PSB reform EASE DFS"
-7. RRB SPECIFIC: "regional rural bank gramin bank" + "NABARD circular latest"
-8. MACRO: "CPI inflation India" + "credit deposit ratio RBI data"
-
-PRIORITY: If there is a major fraud (like IDFC First Bank ₹590cr), FM statement (like mis-selling warning), or RBI Governor comment in the news right now, those MUST be your top stories regardless of what else you find.
-
-After searching, do a FINAL CHECK: What are the top 3 biggest Indian banking stories trending right now? Make sure they are included.
-
-Return 8-12 news + 2-3 circulars. Deep dives for top 2 must-reads only. Total JSON under 15000 chars. VALID JSON only — no text before or after.`
+                content: 'Search Indian banking news for ' + today + '. Run these searches IN ORDER:\n\n1. HEADLINES FIRST: "Indian banking news today" — find what is making front pages right now\n2. BIG EVENTS: "bank fraud India this week" + "finance minister banks RBI governor statement today"\n3. POLICY: "RBI circular notification this week" + "RBI press release latest"\n4. OPERATIONS: "MCLR rate cut banks" + "MSME lending credit India" + "KCC kisan credit card"\n5. DIGITAL: "UPI digital payments fintech India latest"\n6. GOVERNMENT: "government banking scheme India latest" + "PSB reform EASE DFS"\n7. RRB SPECIFIC: "regional rural bank gramin bank" + "NABARD circular latest"\n8. MACRO: "CPI inflation India" + "credit deposit ratio RBI data"\n\nPRIORITY: If there is a major fraud (like IDFC First Bank 590cr), FM statement (like mis-selling warning), or RBI Governor comment in the news right now, those MUST be your top stories regardless of what else you find.\n\nAfter searching, do a FINAL CHECK: What are the top 3 biggest Indian banking stories trending right now? Make sure they are included.\n\nReturn 8-12 news + 2-3 circulars. Deep dives for top 2 must-reads only. Total JSON under 15000 chars. VALID JSON only — no text before or after.'
               }],
             }),
           });
