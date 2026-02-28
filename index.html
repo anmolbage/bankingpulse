@@ -1,236 +1,668 @@
 <!DOCTYPE html>
-<html lang="en" data-t="warm">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>CrackInDays — JAIIB 2026 Study Plan in Your Timeline</title>
-<meta name="description" content="Enter your exam date. Get a personalized day-by-day JAIIB study plan. 50+ topics across 4 papers. Built by bankers, for bankers.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Banking Pulse — Your AI-Powered Banking News Desk</title>
+<meta name="description" content="AI-curated banking & finance news for Indian branch managers. Hindi + English. Circulars, trends, morning briefs — in 2 minutes.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
 <style>
-:root,[data-t="warm"]{--bg:#FEFDFB;--card:#FFF;--card2:#F7F3ED;--border:#E5DFD4;--border2:#D4CCBE;--text:#1C1710;--body:#3D352A;--muted:#7A7062;--faint:#A89E90;--accent:#C05621;--accent2:#A74A1B;--accent-bg:rgba(192,86,33,.07);--accent-br:rgba(192,86,33,.2);--teal:#0F766E;--teal-bg:rgba(15,118,110,.07);--green:#1A7A32;--green-bg:rgba(26,122,50,.07);--red:#B83220;--red-bg:rgba(184,50,32,.06);--blue:#1E56A0;--blue-bg:rgba(30,86,160,.06);--purple:#7C3AED;--purple-bg:rgba(124,58,237,.06);--sh:0 1px 3px rgba(0,0,0,.04),0 2px 10px rgba(0,0,0,.03);--hero-bg:linear-gradient(135deg,#1C1710,#2E2820)}
-[data-t="bright"]{--bg:#F8FAFB;--card:#FFF;--card2:#EFF3F6;--border:#DBE3E8;--border2:#C8D4DB;--text:#0F1A2A;--body:#374151;--muted:#5F7385;--faint:#94A3B8;--accent:#2563EB;--accent2:#1D4ED8;--accent-bg:rgba(37,99,235,.06);--accent-br:rgba(37,99,235,.16);--teal:#0891B2;--teal-bg:rgba(8,145,178,.06);--green:#16A34A;--green-bg:rgba(22,163,74,.06);--red:#DC2626;--red-bg:rgba(220,38,38,.05);--blue:#2563EB;--blue-bg:rgba(37,99,235,.05);--purple:#7C3AED;--purple-bg:rgba(124,58,237,.05);--sh:0 1px 3px rgba(15,26,42,.05),0 4px 16px rgba(15,26,42,.04);--hero-bg:linear-gradient(135deg,#0F1A2A,#1E3A5F)}
-[data-t="dark"]{--bg:#111210;--card:#1C1710;--card2:#22201C;--border:#302C26;--border2:#3A3630;--text:#EDE8E0;--body:#B8B0A4;--muted:#887E72;--faint:#5C554C;--accent:#E8813E;--accent2:#C46A2A;--accent-bg:rgba(232,129,62,.1);--accent-br:rgba(232,129,62,.2);--teal:#40C4B4;--teal-bg:rgba(64,196,180,.08);--green:#50C878;--green-bg:rgba(80,200,120,.08);--red:#F07060;--red-bg:rgba(240,112,96,.08);--blue:#6BA3F0;--blue-bg:rgba(107,163,240,.08);--purple:#A98AE8;--purple-bg:rgba(169,138,232,.08);--sh:0 1px 3px rgba(0,0,0,.2);--hero-bg:linear-gradient(135deg,#111210,#1C1710)}
-*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
-body{font-family:'Bricolage Grotesque',sans-serif;background:var(--bg);color:var(--body);line-height:1.7;-webkit-font-smoothing:antialiased;font-size:16px;overflow-x:hidden}
-.w{max-width:640px;margin:0 auto;padding:0 20px}
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(254,253,251,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:.3s}
-[data-t="dark"] .nav{background:rgba(17,18,16,.9)}[data-t="bright"] .nav{background:rgba(248,250,251,.9)}
-.nav.scrolled{box-shadow:var(--sh)}.nav-brand{font-size:15px;font-weight:800;color:var(--accent)}
-.nav-right{display:flex;align-items:center;gap:8px}
-.theme-sw{display:flex;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:2px;gap:1px}
-.theme-sw button{background:0;border:0;color:var(--faint);width:28px;height:26px;border-radius:6px;font-size:12px;cursor:pointer;transition:.15s}
-.theme-sw button.on{background:var(--accent);color:#fff}
-.nav-cta{font-family:inherit;font-size:12px;font-weight:700;padding:7px 14px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:.2s}.nav-cta:hover{background:var(--accent2)}
-.hero{background:var(--hero-bg);padding:80px 0 40px;color:#fff;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(192,86,33,.12),transparent 70%)}
-[data-t="bright"] .hero::before{background:radial-gradient(circle,rgba(37,99,235,.12),transparent 70%)}
-.hero-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.hero-pill{font-family:'Fira Code',monospace;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);padding:4px 12px;border-radius:5px;font-size:10px;font-weight:600;letter-spacing:.06em}
-.hero h1{font-size:clamp(28px,7vw,44px);font-weight:800;line-height:1.08;letter-spacing:-.03em;margin-bottom:8px;position:relative;z-index:1}
-.hero h1 .acc{color:var(--accent)}[data-t="bright"] .hero h1 .acc{color:#60A5FA}[data-t="dark"] .hero h1 .acc{color:#E8813E}
-.hero-sub{font-family:'Newsreader',serif;font-style:italic;font-size:clamp(15px,2.5vw,18px);color:rgba(255,255,255,.75);max-width:480px;line-height:1.55;margin-bottom:24px}
-.hero-stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
-.hero-stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 16px;min-width:90px}
-.hs-v{font-family:'Fira Code',monospace;font-size:22px;font-weight:700}.hs-l{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px}
-.hero-cta{display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-size:16px;font-weight:700;padding:14px 28px;background:var(--accent);color:#fff;border:none;border-radius:12px;cursor:pointer;transition:.25s;box-shadow:0 4px 20px rgba(192,86,33,.3);text-decoration:none}
-.hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(192,86,33,.4)}
-.plan-gen{padding:40px 0}
-.pg-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:24px;box-shadow:var(--sh)}
-.pg-card h3{font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px}
-.pg-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
-.cycle-row{display:flex;gap:6px;margin-bottom:16px}
-.cycle-btn{flex:1;padding:10px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);cursor:pointer;text-align:center;transition:.2s;font-family:inherit}
-.cycle-btn:hover{border-color:var(--accent-br)}.cycle-btn.active{border-color:var(--accent);background:var(--accent-bg);box-shadow:0 0 0 1px var(--accent)}
-.cycle-btn .cb-name{font-weight:700;font-size:14px;color:var(--text);display:block}
-.cycle-btn .cb-range{font-family:'Fira Code',monospace;font-size:10px;color:var(--faint);margin-top:2px;display:block}
-.paper-checks{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
-.pc-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:.15s;background:var(--card)}
-.pc-row:hover{border-color:var(--accent-br)}.pc-row.on{border-color:var(--accent);background:var(--accent-bg)}
-.pc-check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:transparent;flex-shrink:0;transition:.15s}
-.pc-row.on .pc-check{background:var(--accent);border-color:var(--accent);color:#fff}
-.pc-name{font-size:13px;font-weight:600;color:var(--text);flex:1}.pc-date{font-family:'Fira Code',monospace;font-size:11px;color:var(--faint)}
-.pc-days{font-family:'Fira Code',monospace;font-size:11px;font-weight:600}.pc-days.g{color:var(--green)}.pc-days.a{color:var(--accent)}.pc-days.r{color:var(--red)}
-.btn-gen{width:100%;padding:14px;font-family:inherit;font-size:15px;font-weight:700;background:var(--accent);color:#fff;border:none;border-radius:10px;cursor:pointer;transition:.25s;box-shadow:0 4px 14px rgba(192,86,33,.2)}.btn-gen:hover{background:var(--accent2);transform:translateY(-1px)}
-.plan-preview{display:none;margin-top:24px;animation:fi .4s ease}.plan-preview.show{display:block}
-@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.pp-title{font-size:20px;font-weight:800;color:var(--text);text-align:center;margin-bottom:16px}.pp-title .acc{color:var(--accent)}
-.pp-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:16px}
-.pp-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;box-shadow:var(--sh);position:relative;overflow:hidden}
-.pp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
-.pp-card.c2::before{background:var(--teal)}.pp-card.c3::before{background:var(--blue)}.pp-card.c4::before{background:var(--purple)}
-.pp-num{font-family:'Fira Code',monospace;font-size:26px;font-weight:700;color:var(--accent)}
-.pp-card.c2 .pp-num{color:var(--teal)}.pp-card.c3 .pp-num{color:var(--blue)}.pp-card.c4 .pp-num{color:var(--purple)}
-.pp-lbl{font-size:10px;color:var(--muted);margin-top:2px}
-.pp-sample{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--sh);margin-bottom:16px}
-.pp-sample-label{font-family:'Fira Code',monospace;font-size:9px;font-weight:600;color:var(--accent);letter-spacing:.1em;margin-bottom:10px}
-.pp-day{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--card2);font-size:14px}.pp-day:last-child{border-bottom:none}
-.pp-day-num{font-family:'Fira Code',monospace;font-size:10px;font-weight:600;color:var(--faint);width:40px;flex-shrink:0}
-.pp-day-topic{flex:1;color:var(--body);font-weight:500}
-.pp-day-tag{font-family:'Fira Code',monospace;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px}
-.pp-lock{background:var(--hero-bg);border-radius:14px;padding:24px;text-align:center;color:#E8E0D4;position:relative;overflow:hidden}
-.pp-lock h3{font-size:18px;font-weight:700;color:#FEFDFB;margin-bottom:4px;position:relative;z-index:1}
-.pp-lock p{font-size:14px;color:#A89E90;margin-bottom:16px;position:relative;z-index:1}
-.pp-lock .price-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;position:relative;z-index:1}
-.pp-lock .price-old{font-family:'Fira Code',monospace;font-size:16px;color:#7A7062;text-decoration:line-through}
-.pp-lock .price-new{font-family:'Fira Code',monospace;font-size:32px;font-weight:800;color:var(--accent)}
-.pp-lock .price-tag{font-size:10px;color:#A89E90;background:rgba(192,86,33,.15);padding:3px 8px;border-radius:4px}
-.sample{padding:40px 0}
-.sample-badge{display:inline-block;font-family:'Fira Code',monospace;font-size:10px;font-weight:700;color:var(--green);background:var(--green-bg);border:1px solid rgba(26,122,50,.15);padding:3px 10px;border-radius:5px;letter-spacing:.08em;margin-bottom:8px}
-.sample h2{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px}
-.sample .s-sub{font-size:14px;color:var(--muted);margin-bottom:20px}
-.sample-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:420px){.sample-grid{grid-template-columns:1fr}}
-.sample-card{display:block;background:var(--card);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:var(--sh);transition:.25s}
-.sample-card:hover{border-color:var(--accent);box-shadow:0 4px 20px rgba(0,0,0,.08);transform:translateY(-2px)}
-.sc-top{padding:12px 14px;background:var(--hero-bg);display:flex;align-items:center;justify-content:space-between}
-.sc-day{font-family:'Fira Code',monospace;font-size:11px;font-weight:700;color:#fff}
-.sc-paper{font-family:'Fira Code',monospace;font-size:9px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.06em}
-.sc-body{padding:12px 14px}.sc-title{font-size:14px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:6px}
-.sc-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:8px}
-.sc-meta{display:flex;gap:6px;margin-bottom:8px}
-.sc-tag{font-family:'Fira Code',monospace;font-size:9px;font-weight:600;color:var(--faint);background:var(--card2);padding:3px 8px;border-radius:4px}
-.sc-cta{font-size:13px;font-weight:700;color:var(--accent)}
-.how{padding:40px 0}.how h2{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px}
-.how .h-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
-.step-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:var(--sh);display:flex;gap:14px;align-items:flex-start}
-.step-num{font-family:'Fira Code',monospace;font-size:11px;font-weight:700;color:#fff;background:var(--accent);width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.step-card h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
-.step-card p{font-size:13px;color:var(--muted);line-height:1.55}
-.step-hl{font-family:'Fira Code',monospace;font-size:9px;font-weight:600;color:var(--accent);background:var(--accent-bg);border:1px solid var(--accent-br);padding:2px 8px;border-radius:4px;margin-left:6px;display:inline-block}
-.features{padding:40px 0}.features h2{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px}
-.features .f-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
-.feat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:var(--sh);display:flex;gap:14px}
-.feat-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.feat h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}.feat p{font-size:13px;color:var(--muted);line-height:1.55}
-.proof{padding:40px 0}.proof h2{font-size:20px;font-weight:800;color:var(--text);text-align:center;margin-bottom:20px}
-.proof-quote{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:var(--sh)}
-.proof-quote p{font-family:'Newsreader',serif;font-style:italic;font-size:14px;color:var(--body);line-height:1.6;margin-bottom:6px}
-.proof-quote .pq-from{font-family:'Fira Code',monospace;font-size:10px;color:var(--faint)}
-.faq{padding:40px 0}.faq h2{font-size:20px;font-weight:800;color:var(--text);margin-bottom:20px}
-.faq-item{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;overflow:hidden;box-shadow:var(--sh)}
-.faq-q{padding:14px 16px;font-size:14px;font-weight:700;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.fq-icon{font-size:10px;color:var(--faint);transition:transform .2s}.faq-item.open .fq-icon{transform:rotate(180deg)}
-.faq-a{display:none;padding:0 16px 14px}.faq-item.open .faq-a{display:block}
-.faq-a p{font-size:13px;color:var(--muted);line-height:1.65}
-.final{padding:40px 0 60px}
-.final-card{background:var(--hero-bg);border-radius:16px;padding:32px 24px;text-align:center;color:#fff;position:relative;overflow:hidden}
-.final-card::before{content:'';position:absolute;top:-50px;right:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(192,86,33,.12),transparent 70%)}
-.final-card h2{font-size:20px;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
-.final-card p{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:20px;position:relative;z-index:1}
-.footer{padding:24px 0;text-align:center;border-top:1px solid var(--border)}.footer p{font-size:11px;color:var(--faint);line-height:1.6}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.anim{animation:fadeUp .6s ease both}.anim-d1{animation-delay:.1s}.anim-d2{animation-delay:.2s}.anim-d3{animation-delay:.3s}.anim-d4{animation-delay:.4s}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0d0b09;--bg2:#151210;--surface:#1c1916;--surface2:#242019;
+  --cream:#f6f1eb;--cream2:#efe8df;--warm:#d4c8b8;
+  --copper:#d4793a;--copper-bright:#e8924f;--copper-glow:rgba(212,121,58,0.15);
+  --teal:#3ba99a;--gold:#c9a84c;--red:#d45050;
+  --text:#e8e0d6;--text2:#b0a596;--text3:#7a7064;
+  --line:rgba(232,224,214,0.08);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* GRAIN */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:150px}
+
+/* REVEALS */
+.rv{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1)}
+.rv.vis{opacity:1;transform:translateY(0)}
+.rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.24s}.rv.d3{transition-delay:.36s}.rv.d4{transition-delay:.48s}.rv.d5{transition-delay:.6s}
+
+/* ============ TICKER ============ */
+.ticker{
+  position:fixed;top:0;left:0;right:0;z-index:110;background:var(--copper);overflow:hidden;
+  padding:7px 0;white-space:nowrap;height:30px;
+}
+.ticker-track{
+  display:inline-flex;gap:48px;
+  animation:tickerScroll 30s linear infinite;
+}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{
+  font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--bg);display:flex;align-items:center;gap:10px;
+}
+.ticker-item .dot{width:4px;height:4px;border-radius:50%;background:var(--bg);opacity:0.4}
+
+/* ============ NAV ============ */
+nav{
+  position:fixed;top:30px;left:0;right:0;z-index:100;
+  padding:16px 32px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(13,11,9,0);backdrop-filter:blur(0);
+  transition:all 0.5s ease;border-bottom:1px solid transparent;
+}
+nav.scrolled{background:rgba(13,11,9,0.95);backdrop-filter:blur(20px);border-bottom-color:var(--line)}
+.n-brand{display:flex;align-items:center;gap:12px}
+.n-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--copper),var(--copper-bright));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff;
+  box-shadow:0 2px 12px rgba(212,121,58,0.3);
+}
+.n-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--cream);letter-spacing:-0.3px}
+.n-links{display:flex;gap:28px;align-items:center}
+.n-link{font-size:13px;color:var(--text2);text-decoration:none;transition:color 0.3s;font-weight:500}
+.n-link:hover{color:var(--copper-bright)}
+.n-cta{
+  padding:10px 22px;border-radius:8px;border:none;
+  background:var(--copper);color:#fff;font-size:13px;font-weight:600;
+  font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;
+  transition:all 0.3s;
+}
+.n-cta:hover{background:var(--copper-bright);transform:translateY(-1px);box-shadow:0 4px 20px rgba(212,121,58,0.4)}
+@media(max-width:768px){.n-links{display:none}}
+
+/* ============ HERO ============ */
+.hero{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  padding:160px 48px 80px;gap:48px;align-items:center;
+  position:relative;overflow:hidden;
+}
+@media(max-width:960px){.hero{grid-template-columns:1fr;padding:140px 24px 60px;text-align:center}}
+.hero-glow{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  filter:blur(120px);pointer-events:none;opacity:0.5;
+}
+.hero-glow.g1{top:-200px;left:-150px;background:rgba(212,121,58,0.08)}
+.hero-glow.g2{bottom:-200px;right:-150px;background:rgba(59,169,154,0.06)}
+
+.hero-left{position:relative;z-index:2;max-width:600px}
+@media(max-width:960px){.hero-left{max-width:100%}}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:6px;
+  background:var(--copper-glow);border:1px solid rgba(212,121,58,0.2);
+  font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;
+  color:var(--copper-bright);margin-bottom:28px;
+}
+.hero-eyebrow .live{width:6px;height:6px;border-radius:50%;background:var(--copper-bright);animation:livePulse 2s ease infinite}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(212,121,58,0.4)}50%{box-shadow:0 0 0 8px rgba(212,121,58,0)}}
+
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,6.5vw,68px);font-weight:800;
+  line-height:1.05;letter-spacing:-2px;color:var(--cream);
+  margin-bottom:24px;
+}
+.hero h1 .accent{
+  color:var(--copper-bright);font-style:italic;font-weight:500;
+  position:relative;display:inline-block;
+}
+.hero h1 .accent::after{
+  content:'';position:absolute;bottom:4px;left:0;right:0;height:10px;
+  background:rgba(212,121,58,0.15);border-radius:4px;z-index:-1;
+}
+.hero h1 .hindi{
+  font-family:'Tiro Devanagari Hindi',serif;font-weight:400;
+  color:var(--text2);font-size:0.65em;display:block;margin-top:4px;letter-spacing:0;
+}
+.hero-desc{
+  font-size:clamp(15px,2vw,18px);line-height:1.7;color:var(--text2);
+  margin-bottom:36px;max-width:480px;
+}
+@media(max-width:960px){.hero-desc{max-width:100%;margin-left:auto;margin-right:auto}}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+@media(max-width:960px){.hero-btns{justify-content:center}}
+.btn-p{
+  padding:16px 36px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,var(--copper),#c06a2e);color:#fff;
+  font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;
+  cursor:pointer;text-decoration:none;transition:all 0.3s;
+  display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 4px 24px rgba(212,121,58,0.35);
+}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(212,121,58,0.5)}
+.btn-s{
+  padding:16px 36px;border-radius:10px;
+  border:1.5px solid rgba(232,224,214,0.12);background:transparent;
+  color:var(--text);font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;
+  cursor:pointer;text-decoration:none;transition:all 0.3s;
+}
+.btn-s:hover{border-color:var(--copper);color:var(--copper-bright);transform:translateY(-2px)}
+
+/* PHONE MOCKUP */
+.hero-right{position:relative;z-index:2;display:flex;justify-content:center}
+@media(max-width:960px){.hero-right{margin-top:20px}}
+.phone{
+  width:270px;height:550px;border-radius:36px;
+  background:linear-gradient(160deg,#2a2520,#1a1714);
+  padding:10px;position:relative;
+  box-shadow:0 40px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.04),inset 0 1px 0 rgba(255,255,255,0.04);
+  transform:perspective(1200px) rotateY(-8deg) rotateX(2deg);
+  transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.phone:hover{transform:perspective(1200px) rotateY(-2deg) rotateX(0deg)}
+@media(max-width:960px){.phone{transform:none}.phone:hover{transform:none}}
+.phone-notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:80px;height:22px;border-radius:11px;background:#1a1714;z-index:10}
+.phone-scr{
+  width:100%;height:100%;border-radius:28px;
+  background:#f6f1eb;overflow:hidden;
+}
+.ph-inner{padding:34px 12px 12px;height:100%;overflow:hidden}
+.ph-hdr{display:flex;align-items:center;gap:5px;margin-bottom:8px}
+.ph-mark{width:18px;height:18px;border-radius:5px;background:linear-gradient(135deg,var(--copper),#c06a2e);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:9px;font-weight:700;color:#fff}
+.ph-title{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:#1a1612}
+.ph-tabs{display:flex;gap:3px;margin-bottom:8px}
+.ph-tab{padding:2px 7px;border-radius:8px;font-size:7px;font-weight:600;color:#9a8e80;background:transparent}
+.ph-tab.on{background:#1a1612;color:#f6f1eb}
+.ph-brief{
+  background:#faf8f5;border-radius:8px;border:1px solid rgba(0,0,0,0.05);
+  padding:8px;margin-bottom:6px;
+}
+.ph-brief-top{font-size:6.5px;font-weight:700;color:#b8622e;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;display:flex;align-items:center;gap:3px}
+.ph-brief-txt{font-family:'Playfair Display',serif;font-size:8px;line-height:1.55;color:#3d3529;font-style:italic}
+.ph-card{
+  background:#faf8f5;border-radius:8px;border:1px solid rgba(0,0,0,0.05);
+  padding:8px;margin-bottom:5px;position:relative;overflow:hidden;
+}
+.ph-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.ph-card.r::before{background:#b84040}.ph-card.b::before{background:#3568a8}.ph-card.g::before{background:#c9bfb2}
+.ph-meta{display:flex;gap:3px;margin-bottom:3px;align-items:center}
+.ph-badge{font-size:5.5px;font-weight:700;padding:1px 4px;border-radius:2px;color:#fff}
+.ph-imp{font-size:5.5px;font-weight:700;padding:1px 4px;border-radius:2px}
+.ph-imp.mr{background:rgba(184,64,64,0.1);color:#b84040}.ph-imp.gk{background:rgba(53,104,168,0.1);color:#3568a8}
+.ph-card-t{font-family:'Playfair Display',serif;font-size:9.5px;font-weight:600;line-height:1.35;color:#1a1612}
+
+/* Floating labels around phone */
+.float-label{
+  position:absolute;padding:8px 14px;border-radius:10px;
+  background:var(--surface2);border:1px solid var(--line);
+  font-size:11px;font-weight:600;color:var(--text);
+  box-shadow:0 8px 24px rgba(0,0,0,0.3);white-space:nowrap;
+  animation:floatBob 4s ease-in-out infinite;
+}
+.float-label .fl-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:6px}
+.fl1{top:60px;right:-40px;animation-delay:0s}.fl1 .fl-dot{background:var(--teal)}
+.fl2{bottom:120px;left:-50px;animation-delay:-1.5s}.fl2 .fl-dot{background:var(--copper)}
+.fl3{top:180px;left:-60px;animation-delay:-3s}.fl3 .fl-dot{background:var(--gold)}
+@keyframes floatBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(max-width:960px){.float-label{display:none}}
+
+/* ============ MARQUEE STATS ============ */
+.marquee{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:20px 0;overflow:hidden;position:relative;
+}
+.marquee-track{display:flex;gap:60px;align-items:center;animation:marqueeScroll 25s linear infinite}
+@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.mq-stat{display:flex;flex-direction:column;align-items:center;min-width:140px}
+.mq-num{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:var(--cream);letter-spacing:-1px}
+.mq-lbl{font-size:11px;color:var(--text3);margin-top:2px}
+.mq-sep{width:1px;height:32px;background:var(--line);flex-shrink:0}
+
+/* ============ FEATURES ============ */
+.feat-section{padding:120px 48px;position:relative}
+@media(max-width:768px){.feat-section{padding:80px 24px}}
+.feat-header{margin-bottom:72px}
+.s-eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:var(--copper-bright);margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.s-eyebrow::before{content:'';width:24px;height:1px;background:var(--copper)}
+.s-title{
+  font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,48px);
+  font-weight:700;line-height:1.15;letter-spacing:-1px;color:var(--cream);max-width:640px;
+}
+.s-title .dim{color:var(--text3)}
+
+.feat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  background:var(--line);border-radius:20px;overflow:hidden;
+}
+@media(max-width:960px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.feat-grid{grid-template-columns:1fr}}
+.feat{
+  background:var(--bg2);padding:36px 28px;
+  transition:all 0.5s cubic-bezier(0.16,1,0.3,1);position:relative;overflow:hidden;
+}
+.feat:hover{background:var(--surface)}
+.feat::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--copper);transform:scaleX(0);transform-origin:left;
+  transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.feat:hover::after{transform:scaleX(1)}
+.feat-num{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);margin-bottom:20px;letter-spacing:1px;
+}
+.feat-ico{font-size:28px;margin-bottom:16px;display:block}
+.feat h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--cream);margin-bottom:10px;letter-spacing:-0.3px}
+.feat p{font-size:14px;line-height:1.7;color:var(--text2)}
+
+/* ============ HOW SECTION — EDITORIAL STRIP ============ */
+.how{
+  padding:120px 48px;position:relative;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+@media(max-width:768px){.how{padding:80px 24px}}
+.how-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:64px;
+  border:1px solid var(--line);border-radius:16px;overflow:hidden;
+}
+@media(max-width:960px){.how-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.how-grid{grid-template-columns:1fr}}
+.how-step{
+  padding:36px 28px;border-right:1px solid var(--line);
+  position:relative;transition:background 0.3s;
+}
+.how-step:last-child{border-right:none}
+@media(max-width:960px){.how-step{border-bottom:1px solid var(--line)}}
+.how-step:hover{background:var(--surface)}
+.how-step-num{
+  font-family:'Playfair Display',serif;font-size:56px;font-weight:800;
+  color:rgba(212,121,58,0.08);line-height:1;margin-bottom:16px;
+  letter-spacing:-3px;
+}
+.how-step h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--cream);margin-bottom:8px}
+.how-step p{font-size:13px;line-height:1.65;color:var(--text2)}
+
+/* ============ PRICING ============ */
+.pricing{padding:120px 48px;max-width:920px;margin:0 auto}
+@media(max-width:768px){.pricing{padding:80px 24px}}
+
+/* Toggle */
+.price-toggle{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:32px;margin-bottom:40px}
+.price-toggle .tl{font-size:14px;color:var(--text3);font-weight:500;transition:color 0.3s}
+.price-toggle .tl.active{color:var(--cream);font-weight:600}
+.toggle-track{
+  width:48px;height:26px;border-radius:13px;background:var(--surface2);
+  border:1px solid var(--line);cursor:pointer;position:relative;transition:background 0.3s;
+}
+.toggle-track.on{background:var(--copper)}
+.toggle-knob{
+  width:20px;height:20px;border-radius:50%;background:var(--cream);
+  position:absolute;top:2px;left:2px;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);
+  box-shadow:0 1px 4px rgba(0,0,0,0.3);
+}
+.toggle-track.on .toggle-knob{transform:translateX(22px)}
+.save-badge{
+  font-size:11px;font-weight:700;color:var(--teal);
+  background:rgba(59,169,154,0.1);padding:3px 10px;border-radius:20px;
+  letter-spacing:0.3px;
+}
+
+/* Cards */
+.price-cards{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);border-radius:20px;overflow:hidden}
+@media(max-width:640px){.price-cards{grid-template-columns:1fr;gap:2px}}
+.price-card{background:var(--bg2);padding:40px 32px;position:relative;transition:background 0.3s}
+.price-card:hover{background:var(--surface)}
+.price-card.featured{background:var(--surface)}
+.price-card.featured::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--copper),var(--gold),var(--teal))}
+.pc-badge{
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  padding:4px 12px;border-radius:6px;margin-bottom:20px;
+}
+.pc-badge.free{background:rgba(232,224,214,0.06);color:var(--text3)}
+.pc-badge.pro{background:var(--copper-glow);color:var(--copper-bright)}
+.pc-name{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--cream);margin-bottom:4px}
+.pc-price{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
+.pc-amt{font-family:'Playfair Display',serif;font-size:44px;font-weight:800;color:var(--cream);letter-spacing:-2px}
+.pc-per{font-size:14px;color:var(--text3)}
+.pc-orig{font-size:14px;color:var(--text3);text-decoration:line-through;margin-left:4px}
+.pc-desc{font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.6;min-height:40px}
+.pc-features{margin-bottom:28px}
+.pf{display:flex;align-items:flex-start;gap:10px;padding:9px 0;font-size:13.5px;color:var(--text);line-height:1.5}
+.pf-icon{width:18px;height:18px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.pf-icon.yes{background:var(--teal);color:#fff}
+.pf-icon.no{background:rgba(232,224,214,0.06);color:var(--text3)}
+.pf .dim{color:var(--text3)}
+.pc-cta{
+  width:100%;padding:14px;border-radius:10px;border:none;
+  font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;
+  transition:all 0.3s;display:block;text-align:center;text-decoration:none;
+}
+.pc-cta.primary{
+  background:linear-gradient(135deg,var(--copper),#c06a2e);color:#fff;
+  box-shadow:0 4px 24px rgba(212,121,58,0.3);
+}
+.pc-cta.primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(212,121,58,0.5)}
+.pc-cta.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--line)}
+.pc-cta.secondary:hover{border-color:rgba(232,224,214,0.2);transform:translateY(-2px)}
+
+/* ============ FINAL CTA ============ */
+.final-cta{
+  padding:120px 48px;text-align:center;position:relative;overflow:hidden;
+  border-top:1px solid var(--line);
+}
+@media(max-width:768px){.final-cta{padding:80px 24px}}
+.final-cta .hero-glow{opacity:0.3}
+.final-cta h2{
+  font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,52px);
+  font-weight:800;line-height:1.1;letter-spacing:-1.5px;color:var(--cream);
+  margin-bottom:20px;position:relative;z-index:2;
+}
+.final-cta h2 em{font-style:italic;color:var(--copper-bright);font-weight:500}
+.final-cta p{
+  font-size:17px;line-height:1.7;color:var(--text2);
+  max-width:500px;margin:0 auto 36px;position:relative;z-index:2;
+}
+
+/* ============ FOOTER ============ */
+footer{
+  padding:48px 48px 36px;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+}
+@media(max-width:768px){footer{padding:32px 24px;flex-direction:column;text-align:center}}
+.f-brand{display:flex;align-items:center;gap:10px}
+.f-brand .n-mark{width:28px;height:28px;border-radius:7px;font-size:14px}
+.f-brand span{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--cream)}
+.f-right{font-size:12px;color:var(--text3);line-height:1.7}
+.f-right a{color:var(--text2);text-decoration:none}.f-right a:hover{color:var(--copper-bright)}
 </style>
 </head>
 <body>
-<nav class="nav" id="nav"><div class="nav-brand">CrackInDays</div><div class="nav-right"><div class="theme-sw"><button onclick="setTheme('bright')" id="tb">☀️</button><button onclick="setTheme('warm')" id="tw" class="on">🌤️</button><button onclick="setTheme('dark')" id="td">🌙</button></div><button class="nav-cta" onclick="window.location.href='./auth.html'" style="background:transparent;border:1.5px solid var(--accent);color:var(--accent)">Log In</button><button class="nav-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Get Access →</button></div></nav>
 
-<section class="hero"><div class="w">
-  <div class="hero-pills anim"><span class="hero-pill">JAIIB 2026</span><span class="hero-pill">MAY & NOV CYCLE</span><span class="hero-pill">4 PAPERS</span></div>
-  <h1 class="anim anim-d1">JAIIB in <span class="acc">___</span> Days</h1>
-  <p class="hero-sub anim anim-d2">Enter your exam date. Get a personalized study plan that covers exactly what you need — not a page more, not a day wasted.</p>
-  <div class="hero-stats anim anim-d3">
-    <div class="hero-stat"><div class="hs-v">50+</div><div class="hs-l">Topics mapped</div></div>
-    <div class="hero-stat"><div class="hs-v">4</div><div class="hs-l">Papers</div></div>
-    <div class="hero-stat"><div class="hs-v">6</div><div class="hs-l">Steps/day</div></div>
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker">
+    <span class="ticker-item"><span class="dot"></span>AI-Powered Banking Intelligence</span>
+    <span class="ticker-item"><span class="dot"></span>12–18 Curated Stories Daily</span>
+    <span class="ticker-item"><span class="dot"></span>Hindi + English</span>
+    <span class="ticker-item"><span class="dot"></span>RBI · NABARD · SEBI · DFS Circulars</span>
+    <span class="ticker-item"><span class="dot"></span>Built for Branch Managers</span>
+    <span class="ticker-item"><span class="dot"></span>₹5/day · No Ads · No Tracking</span>
+    <span class="ticker-item"><span class="dot"></span>Shareable Image Cards</span>
+    <span class="ticker-item"><span class="dot"></span>Morning Brief · Importance Ranking</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="dot"></span>AI-Powered Banking Intelligence</span>
+    <span class="ticker-item"><span class="dot"></span>12–18 Curated Stories Daily</span>
+    <span class="ticker-item"><span class="dot"></span>Hindi + English</span>
+    <span class="ticker-item"><span class="dot"></span>RBI · NABARD · SEBI · DFS Circulars</span>
+    <span class="ticker-item"><span class="dot"></span>Built for Branch Managers</span>
+    <span class="ticker-item"><span class="dot"></span>₹5/day · No Ads · No Tracking</span>
+    <span class="ticker-item"><span class="dot"></span>Shareable Image Cards</span>
+    <span class="ticker-item"><span class="dot"></span>Morning Brief · Importance Ranking</span>
   </div>
-  <a class="hero-cta anim anim-d4" href="#plan">Build My Plan ↓</a>
-</div></section>
+</div>
 
-<section class="plan-gen" id="plan"><div class="w"><div class="pg-card">
-  <h3>Your exam. Your timeline.</h3>
-  <p class="pg-sub">Pick your cycle and papers. We'll show you exactly what to study each day.</p>
-  <div class="cycle-row">
-    <div class="cycle-btn active" id="cyc-may" onclick="pickCycle('may')"><span class="cb-name">May 2026</span><span class="cb-range">3 May – 17 May</span></div>
-    <div class="cycle-btn" id="cyc-nov" onclick="pickCycle('nov')"><span class="cb-name">Nov 2026</span><span class="cb-range">1 Nov – 29 Nov</span></div>
+<!-- NAV -->
+<nav id="nav">
+  <div class="n-brand"><div class="n-mark">₹</div><span class="n-name">Banking Pulse</span></div>
+  <div class="n-links">
+    <a href="#features" class="n-link">Features</a>
+    <a href="#how" class="n-link">How It Works</a>
+    <a href="#pricing" class="n-link">Pricing</a>
+    <a href="#start" class="n-cta">Get Started →</a>
   </div>
-  <div class="paper-checks" id="paperChecks"></div>
-  <button class="btn-gen" onclick="showPlan()">Generate My Plan →</button>
-  <div class="plan-preview" id="planPreview">
-    <h3 class="pp-title" id="ppTitle"></h3>
-    <div class="pp-cards" id="ppCards"></div>
-    <div class="pp-sample"><div class="pp-sample-label">SAMPLE: YOUR FIRST 7 DAYS</div><div id="ppDays"></div></div>
-    <div class="pp-lock" id="pricing">
-      <h3>Unlock your full <span id="finalDays">72</span>-day plan</h3>
-      <p>Day-by-day modules. Interactive learning. Exam-ready in your timeline.</p>
-      <div class="price-row"><span class="price-old">₹999</span><span class="price-new">₹199</span><span class="price-tag">EARLY BIRD</span></div>
-      <a class="hero-cta" href="https://rzp.io/rzp/CdtjUaw" target="_blank" style="display:inline-flex">Get Early Access → ₹199</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow g1"></div>
+  <div class="hero-glow g2"></div>
+  <div class="hero-left">
+    <div class="hero-eyebrow rv"><span class="live"></span> AI-Powered · Refreshes Every 6 Hours</div>
+    <h1 class="rv d1">
+      Banking news,<br>explained like a<br><span class="accent">colleague</span>
+      <span class="hindi">बैंकिंग समाचार, सरल भाषा में</span>
+    </h1>
+    <p class="hero-desc rv d2">AI reads 50+ sources and gives you 12–18 stories that actually matter — in the language you think in. Built for the Indian banker who's too busy to scroll, but too smart to be uninformed.</p>
+    <div class="hero-btns rv d3">
+      <a href="#start" class="btn-p">Open Banking Pulse →</a>
+      <a href="#features" class="btn-s">See Features</a>
     </div>
   </div>
-</div></div></section>
-
-<section class="sample"><div class="w">
-  <div class="sample-badge">FREE · NO SIGNUP</div>
-  <h2>Try a real module</h2>
-  <p class="s-sub">See the 6-step learning system in action. Full interactive experience.</p>
-  <div class="sample-grid">
-    <a class="sample-card" href="./jaiib-day1-v2.html" target="_blank">
-      <div class="sc-top"><div class="sc-day">DAY 01</div><div class="sc-paper">IE&IFS · P1</div></div>
-      <div class="sc-body"><div class="sc-title">Indian Economy Overview & Sectors</div><div class="sc-desc">GDP structure, sector shifts, interactive economy explorer with year slider.</div><div class="sc-meta"><span class="sc-tag">6 STEPS</span><span class="sc-tag">~18 min</span></div><div class="sc-cta">Open Free Module →</div></div>
-    </a>
-    <a class="sample-card" href="./jaiib-day2-v3.html" target="_blank">
-      <div class="sc-top"><div class="sc-day">DAY 02</div><div class="sc-paper">IE&IFS · P1</div></div>
-      <div class="sc-body"><div class="sc-title">Economic Planning & NITI Aayog</div><div class="sc-desc">Five Year Plans to NITI Aayog. Quick/Full toggle, exam traps, MCQs.</div><div class="sc-meta"><span class="sc-tag">6 STEPS</span><span class="sc-tag">~20 min</span></div><div class="sc-cta">Open Free Module →</div></div>
-    </a>
+  <div class="hero-right rv d2">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-scr">
+        <div class="ph-inner">
+          <div class="ph-hdr"><div class="ph-mark">₹</div><span class="ph-title">Banking Pulse</span></div>
+          <div class="ph-tabs"><span class="ph-tab on">All</span><span class="ph-tab">Policy</span><span class="ph-tab">Banking</span><span class="ph-tab">⚡ 7</span></div>
+          <div class="ph-brief">
+            <div class="ph-brief-top">☀️ Morning Brief</div>
+            <div class="ph-brief-txt">RBI held steady at 5.25%. The big one: collateral-free limit doubled to ₹20L from April. Keep an eye on UPI fraud framework.</div>
+          </div>
+          <div class="ph-card r">
+            <div class="ph-meta"><span class="ph-badge" style="background:#b84040">LATEST</span><span class="ph-imp mr">Must Read</span></div>
+            <div class="ph-card-t">RBI Holds Repo Rate — Signals Stability Through Q1</div>
+          </div>
+          <div class="ph-card b">
+            <div class="ph-meta"><span class="ph-badge" style="background:#b8622e">ACTION</span><span class="ph-imp gk">Good to Know</span></div>
+            <div class="ph-card-t">MSME Collateral-Free Limit Doubled to ₹20 Lakh</div>
+          </div>
+          <div class="ph-card g" style="opacity:0.5">
+            <div class="ph-meta"><span class="ph-badge" style="background:#3568a8">NEW</span></div>
+            <div class="ph-card-t">UPI Fraud Compensation Framework...</div>
+          </div>
+        </div>
+      </div>
+      <div class="float-label fl1"><span class="fl-dot"></span>Hindi Toggle</div>
+      <div class="float-label fl2"><span class="fl-dot"></span>Save & Share</div>
+      <div class="float-label fl3"><span class="fl-dot"></span>Trend Charts</div>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section class="how"><div class="w">
-  <h2>Each day: 6 steps, 15–20 minutes</h2>
-  <p class="h-sub">A complete learning cycle designed to stick — not just test you.</p>
-  <div class="step-card"><div class="step-num">1</div><div><h4>Quick Scan</h4><p>Key numbers, core facts, and exam weight at a glance. Know what you're about to learn and why it matters.</p></div></div>
-  <div class="step-card"><div class="step-num">2</div><div><h4>Core Concepts <span class="step-hl">QUICK / FULL TOGGLE</span></h4><p>Two modes — Quick Revision for a fast refresher, Full Study for deep understanding. Switch anytime based on how much time you have.</p></div></div>
-  <div class="step-card"><div class="step-num">3</div><div><h4>Interactive Deep Dive <span class="step-hl">SLIDERS & CALCULATORS</span></h4><p>Drag sliders, manipulate real numbers, see how CRR changes affect deposits. Build intuition, not just memory.</p></div></div>
-  <div class="step-card"><div class="step-num">4</div><div><h4>Exam Traps & Tricks</h4><p>The 5 ways IIBF tries to trick you — "The Swap", "The Almost Right", "The Extra Data". Tap each trap to see the pattern.</p></div></div>
-  <div class="step-card"><div class="step-num">5</div><div><h4>Practice MCQs</h4><p>Real exam-style questions with instant feedback and a "Simplify" button that translates IIBF jargon into plain language.</p></div></div>
-  <div class="step-card"><div class="step-num">6</div><div><h4>Revision Card</h4><p>One-line memory hooks and mnemonics. By exam day, you'll have a complete cheat sheet built from your own learning.</p></div></div>
-</div></section>
+<!-- STATS MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track" id="mq">
+    <div class="mq-stat"><div class="mq-num">12–18</div><div class="mq-lbl">Stories per refresh</div></div><div class="mq-sep"></div>
+    <div class="mq-stat"><div class="mq-num">6</div><div class="mq-lbl">Smart categories</div></div><div class="mq-sep"></div>
+    <div class="mq-stat"><div class="mq-num">2 min</div><div class="mq-lbl">To be fully updated</div></div><div class="mq-sep"></div>
+    <div class="mq-stat"><div class="mq-num">₹3–5</div><div class="mq-lbl">Cost per refresh</div></div><div class="mq-sep"></div>
+    <div class="mq-stat"><div class="mq-num">50+</div><div class="mq-lbl">Sources scanned</div></div><div class="mq-sep"></div>
+    <div class="mq-stat"><div class="mq-num">0</div><div class="mq-lbl">Ads or tracking</div></div><div class="mq-sep"></div>
+    <!-- duplicate -->
+    <div class="mq-stat"><div class="mq-num">12–18</div><div class="mq-lbl">Stories per refresh</div></div><div class="mq-sep"></div>
+    <div class="mq-stat"><div class="mq-num">6</div><div class="mq-lbl">Smart categories</div></div><div class="mq-sep"></div>
+    <div class="mq-stat"><div class="mq-num">2 min</div><div class="mq-lbl">To be fully updated</div></div><div class="mq-sep"></div>
+    <div class="mq-stat"><div class="mq-num">₹3–5</div><div class="mq-lbl">Cost per refresh</div></div><div class="mq-sep"></div>
+    <div class="mq-stat"><div class="mq-num">50+</div><div class="mq-lbl">Sources scanned</div></div><div class="mq-sep"></div>
+    <div class="mq-stat"><div class="mq-num">0</div><div class="mq-lbl">Ads or tracking</div></div><div class="mq-sep"></div>
+  </div>
+</div>
 
-<section class="features"><div class="w">
-  <h2>What makes this different</h2>
-  <p class="f-sub">Not PDFs. Not videos. Not test series that test you without teaching you.</p>
-  <div class="feat"><div class="feat-icon" style="background:var(--accent-bg)">⚡</div><div><h4>Quick Revision / Full Study Toggle</h4><p>15 minutes before branch opens? Quick mode. Sunday afternoon free? Full mode. Same module, two depths.</p></div></div>
-  <div class="feat"><div class="feat-icon" style="background:var(--blue-bg)">📊</div><div><h4>Interactive Calculators & Sliders</h4><p>Drag a slider to see how SLR changes affect bank lending. Watch the economy shift decade by decade. Abstract concepts become tangible.</p></div></div>
-  <div class="feat"><div class="feat-icon" style="background:var(--red-bg)">🔍</div><div><h4>Exam Trap Decoder</h4><p>IIBF reuses the same trick patterns across all papers. We expose each one with real examples so you recognize them on exam day.</p></div></div>
-  <div class="feat"><div class="feat-icon" style="background:var(--teal-bg)">📱</div><div><h4>Built for Your Phone</h4><p>90% of JAIIB aspirants study on mobile. Every interaction — tapping traps, sliding calculators, toggling modes — is designed for thumbs.</p></div></div>
-  <div class="feat"><div class="feat-icon" style="background:var(--purple-bg)">💡</div><div><h4>Tappable Glossary</h4><p>Every technical term — NDTL, MCLR, CRAR — is tappable. Plain-English explanation + exam context in one popup.</p></div></div>
-</div></section>
+<!-- FEATURES -->
+<section class="feat-section" id="features">
+  <div class="feat-header">
+    <div class="s-eyebrow rv">Features</div>
+    <h2 class="s-title rv d1">Everything a branch manager needs. <span class="dim">Nothing they don't.</span></h2>
+  </div>
+  <div class="feat-grid">
+    <div class="feat rv">
+      <div class="feat-num">01</div>
+      <div class="feat-ico">☀️</div>
+      <h3>Morning Brief</h3>
+      <p>AI writes a 30-second overview of the week — like a colleague catching you up before the morning meeting.</p>
+    </div>
+    <div class="feat rv d1">
+      <div class="feat-num">02</div>
+      <div class="feat-ico">⚡</div>
+      <h3>Importance Ranking</h3>
+      <p>Every story tagged Must Read, Good to Know, or FYI. Red strip for urgent. Know instantly what needs your attention.</p>
+    </div>
+    <div class="feat rv d2">
+      <div class="feat-num">03</div>
+      <div class="feat-ico">📋</div>
+      <h3>Circular Tracker</h3>
+      <p>RBI, NABARD, DFS circulars with checkbox action items and deadlines. Your compliance never falls through the cracks.</p>
+    </div>
+    <div class="feat rv d3">
+      <div class="feat-num">04</div>
+      <div class="feat-ico">📊</div>
+      <h3>Trend Charts</h3>
+      <p>Repo rate across meetings. Credit growth over quarters. Visual context that makes dry numbers meaningful at a glance.</p>
+    </div>
+    <div class="feat rv d4">
+      <div class="feat-num">05</div>
+      <div class="feat-ico">🇮🇳</div>
+      <h3>Hindi + English</h3>
+      <p>One tap switches everything — briefs, summaries, action items. Natural, everyday Hindi, not textbook Sanskrit.</p>
+    </div>
+    <div class="feat rv d5">
+      <div class="feat-num">06</div>
+      <div class="feat-ico">📤</div>
+      <h3>Share as Image</h3>
+      <p>Every story becomes a branded card. Share to WhatsApp, Telegram, or notice board. Your team stays informed too.</p>
+    </div>
+  </div>
+</section>
 
-<section class="proof"><div class="w">
-  <h2>Built by a banker, for bankers</h2>
-  <div class="proof-quote"><p>"I've been in banking 6 years. I know what actually matters for JAIIB vs what's exam filler. This teaches the way I'd explain to my own team — in plain language, with real branch examples."</p><div class="pq-from">— The Builder</div></div>
-  <div class="proof-quote"><p>"Existing JAIIB prep is either dense textbooks nobody reads, or test series that test you without teaching you. This is different — it teaches first, then tests."</p><div class="pq-from">— The Problem</div></div>
-</div></section>
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="feat-header">
+    <div class="s-eyebrow rv">How It Works</div>
+    <h2 class="s-title rv d1">Open. Sign in. <span class="dim">That's it.</span></h2>
+  </div>
+  <div class="how-grid">
+    <div class="how-step rv">
+      <div class="how-step-num">01</div>
+      <h3>Open the app</h3>
+      <p>Visit bankingpulse.app on your phone. No download needed — it works like a native app from your browser.</p>
+    </div>
+    <div class="how-step rv d1">
+      <div class="how-step-num">02</div>
+      <h3>Sign in with Google</h3>
+      <p>One tap. No passwords, no forms. Your Google account is all you need. Free tier starts instantly.</p>
+    </div>
+    <div class="how-step rv d2">
+      <div class="how-step-num">03</div>
+      <h3>Add to Home Screen</h3>
+      <p>Tap "Add to Home Screen" — now it launches like an app. Auto-refreshes 4x daily with fresh news.</p>
+    </div>
+    <div class="how-step rv d3">
+      <div class="how-step-num">04</div>
+      <h3>Read, save, share</h3>
+      <p>Morning brief in 30 seconds. Deep dive what matters. Save for later. Share branded cards with your team.</p>
+    </div>
+  </div>
+</section>
 
-<section class="faq"><div class="w">
-  <h2>Frequently Asked</h2>
-  <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">What exactly do I get for ₹199?<span class="fq-icon">▼</span></div><div class="faq-a"><p>A personalized day-by-day study plan for all 4 JAIIB papers, interactive modules with the 6-step learning cycle (Scan → Learn → Explore → Traps → MCQs → Revise), Quick/Full study toggle, interactive sliders and calculators, exam trap decoders, tappable glossary, and practice MCQs. Works on any phone browser — no app needed.</p></div></div>
-  <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">I have only 15–20 days left. Is it worth it?<span class="fq-icon">▼</span></div><div class="faq-a"><p>Absolutely. Your plan focuses only on high-yield topics that appear in almost every exam. You'll cover ~65% of likely questions in focused modules. Many people waste 15 days studying linearly and barely reach Chapter 12. Your plan prioritizes smartly.</p></div></div>
-  <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">Is this just another test series?<span class="fq-icon">▼</span></div><div class="faq-a"><p>No. Test series test you on things you haven't learned. This teaches first (scan + concepts + interactive), then tests (MCQs), then helps you remember (revision card). Learning first, testing second.</p></div></div>
-  <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">Will it work on my phone?<span class="fq-icon">▼</span></div><div class="faq-a"><p>Yes. Works in any browser — Chrome, Safari, Samsung Internet. Every slider, trap card, and toggle is designed for touch. No app download needed.</p></div></div>
-  <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">How many modules are live right now?<span class="fq-icon">▼</span></div><div class="faq-a"><p>We're releasing modules weekly. 50+ topics are mapped across all 4 papers. Early access users get modules as they're built. By April, the full curriculum will be ready well before the May exam cycle.</p></div></div>
-</div></section>
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="feat-header">
+    <div class="s-eyebrow rv">Pricing</div>
+    <h2 class="s-title rv d1">Start free. <span class="dim">Upgrade when you can't stop reading.</span></h2>
+  </div>
 
-<section class="final"><div class="w"><div class="final-card">
-  <h2>Paper 1 is in <span id="finalDays2" style="color:var(--accent)">72</span> days.</h2>
-  <p>Every day you don't start is a topic you won't cover.</p>
-  <a class="hero-cta" href="./auth.html?screen=signup" style="display:inline-flex">Get Early Access → ₹199</a>
-</div></div></section>
+  <div class="price-toggle rv d2">
+    <span class="tl active" id="tl-mo">Monthly</span>
+    <div class="toggle-track" id="billToggle"><div class="toggle-knob"></div></div>
+    <span class="tl" id="tl-yr">Annual</span>
+    <span class="save-badge" id="saveBadge" style="opacity:0;transition:opacity 0.3s">Save 33%</span>
+  </div>
 
-<footer class="footer"><div class="w"><p>CrackInDays.com · JAIIB in ___ Days · Built by bankers, for bankers<br>Not affiliated with IIBF · © 2026</p></div></footer>
+  <div class="price-cards rv d3">
+    <!-- FREE -->
+    <div class="price-card">
+      <div class="pc-badge free">Free Forever</div>
+      <div class="pc-name">Free</div>
+      <div class="pc-price"><span class="pc-amt">₹0</span></div>
+      <p class="pc-desc">Get the daily pulse. Enough to stay aware — not enough to stay ahead.</p>
+      <div class="pc-features">
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div>Morning Brief (daily overview)</div>
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div>Top 5 stories (titles + tags)</div>
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div>1 category filter</div>
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div>Refreshes 1x per day</div>
+        <div class="pf"><div class="pf-icon no"><svg width="8" height="8" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></div><span class="dim">No story deep-dive</span></div>
+        <div class="pf"><div class="pf-icon no"><svg width="8" height="8" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></div><span class="dim">No circulars or action items</span></div>
+        <div class="pf"><div class="pf-icon no"><svg width="8" height="8" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></div><span class="dim">No Hindi, save, share, trends</span></div>
+      </div>
+      <a href="#" class="pc-cta secondary">Start Free →</a>
+    </div>
+
+    <!-- PRO -->
+    <div class="price-card featured">
+      <div class="pc-badge pro">Most Popular</div>
+      <div class="pc-name">Pro</div>
+      <div class="pc-price">
+        <span class="pc-amt" id="proPrice">₹149</span>
+        <span class="pc-per" id="proPer">/ month</span>
+        <span class="pc-orig" id="proOrig" style="display:none"></span>
+      </div>
+      <p class="pc-desc">Full intelligence desk. Every story, every circular, every language — no walls.</p>
+      <div class="pc-features">
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div><strong>Everything in Free, plus:</strong></div>
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div>Full 12–18 stories with deep dive</div>
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div>All 6 categories + circular tracker</div>
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div>Checkbox action items + deadlines</div>
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div>Hindi ↔ English toggle</div>
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div>Save, bookmark, share as image</div>
+        <div class="pf"><div class="pf-icon yes"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg></div>Trend charts + 4x daily refresh</div>
+      </div>
+      <a href="#" class="pc-cta primary" id="start">Get Pro →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="hero-glow g1"></div>
+  <div class="hero-glow g2"></div>
+  <h2 class="rv">Stop scrolling 10 websites.<br><em>Start your morning with clarity.</em></h2>
+  <p class="rv d1">Banking Pulse gives you what matters — in the language you think in. Read less, know more.</p>
+  <a href="#start" class="btn-p rv d2" style="font-size:16px;padding:18px 44px">Start Reading Now →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-brand"><div class="n-mark">₹</div><span>Banking Pulse</span></div>
+  <div class="f-right">AI-Powered Banking Digest · <a href="https://bankingpulse.app">bankingpulse.app</a><br>No ads, no tracking · Your data stays on your device</div>
+</footer>
 
 <script>
-function setTheme(t){document.documentElement.setAttribute('data-t',t);document.querySelectorAll('.theme-sw button').forEach(b=>b.classList.remove('on'));document.getElementById({bright:'tb',warm:'tw',dark:'td'}[t]).classList.add('on');try{localStorage.setItem('jaiib_theme',t)}catch(e){}}
-(function(){try{const t=localStorage.getItem('jaiib_theme');if(t)setTheme(t)}catch(e){}})();
-window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
-const cal={may:{label:'May 2026',papers:[{id:'P1',code:'IE&IFS',name:'Indian Economy & IFS',date:'2026-05-03',day:'Sun'},{id:'P2',code:'PPB',name:'Principles of Banking',date:'2026-05-09',day:'Sat'},{id:'P3',code:'AFM',name:'Accounting & Financial Mgmt',date:'2026-05-10',day:'Sun'},{id:'P4',code:'RBWM',name:'Retail Banking & Wealth Mgmt',date:'2026-05-17',day:'Sun'}]},nov:{label:'Nov 2026',papers:[{id:'P1',code:'IE&IFS',name:'Indian Economy & IFS',date:'2026-11-01',day:'Sun'},{id:'P2',code:'PPB',name:'Principles of Banking',date:'2026-11-22',day:'Sun'},{id:'P3',code:'AFM',name:'Accounting & Financial Mgmt',date:'2026-11-28',day:'Sat'},{id:'P4',code:'RBWM',name:'Retail Banking & Wealth Mgmt',date:'2026-11-29',day:'Sun'}]}};
-const sampleTopics=[{day:1,topic:'Indian Economy Overview & Sectors',paper:'IE&IFS'},{day:2,topic:'Economic Planning & NITI Aayog',paper:'IE&IFS'},{day:3,topic:'Sectors of Indian Economy',paper:'IE&IFS'},{day:4,topic:'Priority Sector Lending & MSME',paper:'IE&IFS'},{day:5,topic:'Infrastructure — Roads, Power, Digital',paper:'IE&IFS'},{day:6,topic:'RBI — Structure & Functions',paper:'IE&IFS'},{day:7,topic:'Monetary Policy — Repo, CRR, SLR',paper:'IE&IFS'}];
-const clsMap={P1:'c1',P2:'c2',P3:'c3',P4:'c4'};let cycle='may',selPapers=new Set(['P1','P2','P3','P4']);
-const today=new Date();today.setHours(0,0,0,0);function daysTo(d){return Math.ceil((new Date(d)-today)/864e5)}
-function pickCycle(c){cycle=c;document.getElementById('cyc-may').classList.toggle('active',c==='may');document.getElementById('cyc-nov').classList.toggle('active',c==='nov');renderPapers();document.getElementById('planPreview').classList.remove('show')}
-function renderPapers(){const el=document.getElementById('paperChecks');el.innerHTML='';cal[cycle].papers.forEach(p=>{const d=daysTo(p.date);const dc=d>60?'g':d>30?'a':'r';const on=selPapers.has(p.id);const dateStr=new Date(p.date).toLocaleDateString('en-IN',{day:'2-digit',month:'short'});const row=document.createElement('div');row.className=`pc-row ${on?'on':''}`;row.onclick=()=>{if(selPapers.has(p.id))selPapers.delete(p.id);else selPapers.add(p.id);row.classList.toggle('on')};row.innerHTML=`<div class="pc-check">✓</div><div class="pc-name">${p.name}</div><div class="pc-date">${dateStr}</div><div class="pc-days ${dc}">${d}d</div>`;el.appendChild(row)})}
-function showPlan(){if(selPapers.size===0)return;const papers=cal[cycle].papers.filter(p=>selPapers.has(p.id)).map(p=>({...p,days:daysTo(p.date)})).sort((a,b)=>a.days-b.days);const total=papers[papers.length-1].days;document.getElementById('ppTitle').innerHTML=`Your <span class="acc">${total}-Day</span> Plan`;const cards=document.getElementById('ppCards');cards.innerHTML='';papers.forEach(p=>{cards.innerHTML+=`<div class="pp-card ${clsMap[p.id]}"><div class="pp-num">${p.days}</div><div class="pp-lbl">days to ${p.code}</div></div>`});const days=document.getElementById('ppDays');days.innerHTML='';sampleTopics.forEach(t=>{days.innerHTML+=`<div class="pp-day"><span class="pp-day-num">Day ${t.day}</span><span class="pp-day-topic">${t.topic}</span><span class="pp-day-tag" style="background:var(--accent-bg);color:var(--accent)">${t.paper}</span></div>`});document.getElementById('finalDays').textContent=papers[0].days;document.getElementById('finalDays2').textContent=papers[0].days;const pp=document.getElementById('planPreview');pp.classList.add('show');setTimeout(()=>pp.scrollIntoView({behavior:'smooth',block:'start'}),100)}
-renderPapers();document.getElementById('finalDays2').textContent=daysTo('2026-05-03');
+// Scroll reveals
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('vis');obs.unobserve(el.target)}})},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+// Nav scroll
+const nav=document.getElementById('nav');
+let ticking=false;
+window.addEventListener('scroll',()=>{
+  if(!ticking){requestAnimationFrame(()=>{nav.classList.toggle('scrolled',window.scrollY>60);ticking=false});ticking=true}
+},{passive:true});
+
+// Billing toggle
+let isAnnual=false;
+const toggle=document.getElementById('billToggle');
+const tlMo=document.getElementById('tl-mo');
+const tlYr=document.getElementById('tl-yr');
+const saveBadge=document.getElementById('saveBadge');
+const proPrice=document.getElementById('proPrice');
+const proPer=document.getElementById('proPer');
+const proOrig=document.getElementById('proOrig');
+
+toggle?.addEventListener('click',()=>{
+  isAnnual=!isAnnual;
+  toggle.classList.toggle('on',isAnnual);
+  tlMo.classList.toggle('active',!isAnnual);
+  tlYr.classList.toggle('active',isAnnual);
+  saveBadge.style.opacity=isAnnual?'1':'0';
+  if(isAnnual){
+    proPrice.textContent='₹99';
+    proPer.textContent='/ month';
+    proOrig.style.display='inline';
+    proOrig.textContent='₹149';
+  }else{
+    proPrice.textContent='₹149';
+    proPer.textContent='/ month';
+    proOrig.style.display='none';
+  }
+});
 </script>
 </body>
 </html>
