@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-t="warm">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAIIB in 60 Days — Your Study Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./js/config.js"></script>
+<style>
+:root,[data-t="warm"]{--bg:#FEFDFB;--warm:#F7F3ED;--cream:#EFEAE1;--surface:#FFF;--border:#E5DFD4;--border-s:#D4CCBE;--text:#1C1710;--body:#3D352A;--muted:#7A7062;--faint:#A89E90;--amber:#C05621;--amber-s:rgba(192,86,33,.07);--amber-m:rgba(192,86,33,.14);--teal:#0F766E;--teal-bg:rgba(15,118,110,.07);--green:#1A7A32;--green-bg:rgba(26,122,50,.07);--red:#B83220;--red-bg:rgba(184,50,32,.06);--blue:#1E56A0;--blue-bg:rgba(30,86,160,.06);--purple:#7C3AED;--purple-bg:rgba(124,58,237,.06);--r:14px;--rs:8px;--shadow:0 2px 12px rgba(28,23,16,.06);--shadow-l:0 8px 30px rgba(28,23,16,.09)}
+[data-t="bright"]{--bg:#F8FAFB;--warm:#EFF3F6;--cream:#E4EBF0;--surface:#FFF;--border:#DBE3E8;--border-s:#C8D4DB;--text:#0F1A2A;--body:#374151;--muted:#5F7385;--faint:#94A3B8;--amber:#2563EB;--amber-s:rgba(37,99,235,.06);--amber-m:rgba(37,99,235,.12);--teal:#0891B2;--teal-bg:rgba(8,145,178,.06);--green:#16A34A;--green-bg:rgba(22,163,74,.06);--red:#DC2626;--red-bg:rgba(220,38,38,.05);--blue:#2563EB;--blue-bg:rgba(37,99,235,.05);--purple:#7C3AED;--purple-bg:rgba(124,58,237,.05);--r:14px;--rs:8px;--shadow:0 2px 12px rgba(15,26,42,.05);--shadow-l:0 8px 30px rgba(15,26,42,.08)}
+[data-t="dark"]{--bg:#111210;--warm:#1A1814;--cream:#22201C;--surface:#1C1710;--border:#302C26;--border-s:#3A3630;--text:#EDE8E0;--body:#B8B0A4;--muted:#887E72;--faint:#5C554C;--amber:#E8813E;--amber-s:rgba(232,129,62,.1);--amber-m:rgba(232,129,62,.18);--teal:#40C4B4;--teal-bg:rgba(64,196,180,.08);--green:#50C878;--green-bg:rgba(80,200,120,.08);--red:#F07060;--red-bg:rgba(240,112,96,.08);--blue:#6BA3F0;--blue-bg:rgba(107,163,240,.08);--purple:#A98AE8;--purple-bg:rgba(169,138,232,.08);--r:14px;--rs:8px;--shadow:0 2px 12px rgba(0,0,0,.15);--shadow-l:0 8px 30px rgba(0,0,0,.2)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Bricolage Grotesque',sans-serif;background:var(--bg);color:var(--body);line-height:1.75;-webkit-font-smoothing:antialiased;min-height:100vh}
+.loading{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+.loading-spinner{width:32px;height:32px;border:3px solid var(--border);border-radius:50%;border-top-color:var(--amber);animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:.82rem;color:var(--muted)}
+.dashboard{display:none;min-height:100vh}.dashboard.show{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.dash-topbar{position:sticky;top:0;z-index:100;background:rgba(254,253,251,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:.6rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
+[data-t="dark"] .dash-topbar{background:rgba(17,18,16,.94)}[data-t="bright"] .dash-topbar{background:rgba(248,250,251,.94)}
+.dash-brand{font-size:.9rem;font-weight:800;color:var(--amber)}
+.dash-user{display:flex;align-items:center;gap:.5rem}
+.dash-badge{font-family:'Fira Code',monospace;font-size:.55rem;font-weight:600;color:var(--green);background:var(--green-bg);border:1px solid rgba(26,122,50,.15);padding:.2rem .5rem;border-radius:4px;letter-spacing:.06em}
+.dash-name{font-size:.72rem;color:var(--muted);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dash-logout{font-size:.65rem;color:var(--faint);background:0;border:1px solid var(--border);padding:.2rem .45rem;border-radius:4px;cursor:pointer;font-family:inherit;transition:.2s}.dash-logout:hover{border-color:var(--red);color:var(--red)}
+.dash-theme{display:flex;background:var(--warm);border:1px solid var(--border);border-radius:6px;padding:1px;gap:1px}
+.dash-theme button{background:0;border:0;color:var(--faint);width:24px;height:22px;border-radius:4px;font-size:10px;cursor:pointer;transition:.15s}.dash-theme button.on{background:var(--amber);color:#fff}
+.dash-hero{max-width:680px;margin:0 auto;padding:2rem 1.25rem 1.5rem}
+.dash-hero h1{font-size:clamp(1.4rem,3.5vw,1.8rem);font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1.2;margin-bottom:.3rem}
+.dash-hero p{font-family:'Newsreader',serif;font-style:italic;font-size:.9rem;color:var(--muted)}
+.dash-progress{max-width:680px;margin:0 auto;padding:0 1.25rem 1.5rem}
+.dp-track{height:6px;background:var(--cream);border-radius:3px;overflow:hidden;margin-bottom:.4rem}
+.dp-fill{height:100%;background:var(--amber);border-radius:3px;transition:width .5s ease}
+.dp-info{display:flex;justify-content:space-between;font-family:'Fira Code',monospace;font-size:.6rem;color:var(--faint)}
+.dash-section{max-width:680px;margin:0 auto;padding:0 1.25rem 1.5rem}
+.ds-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem}
+.ds-dot{width:10px;height:10px;border-radius:3px}
+.ds-title{font-size:1rem;font-weight:700;color:var(--text)}
+.ds-count{font-family:'Fira Code',monospace;font-size:.6rem;color:var(--faint)}
+.mod-card{display:flex;align-items:stretch;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:.5rem;box-shadow:var(--shadow);transition:all .2s;text-decoration:none;color:inherit}
+.mod-card:hover{border-color:var(--amber-m);box-shadow:var(--shadow-l);transform:translateY(-1px)}
+.mc-side{width:4px;flex-shrink:0}.mc-body{flex:1;padding:.85rem 1rem;display:flex;align-items:center;gap:.85rem}
+.mc-day{font-family:'Fira Code',monospace;font-size:.65rem;font-weight:700;color:var(--faint);min-width:42px}
+.mc-info{flex:1}.mc-title{font-size:.88rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:.1rem}
+.mc-meta{display:flex;gap:.5rem;align-items:center}
+.mc-tag{font-family:'Fira Code',monospace;font-size:.5rem;font-weight:600;padding:.12rem .35rem;border-radius:3px;letter-spacing:.04em}
+.mc-time{font-family:'Fira Code',monospace;font-size:.5rem;color:var(--faint)}
+.mc-status{flex-shrink:0;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem}
+.mc-status.done{background:var(--green-bg);color:var(--green)}.mc-status.open{background:var(--amber-s);color:var(--amber)}
+.coming-card{background:var(--warm);border:1.5px dashed var(--border);border-radius:var(--r);padding:1.25rem;text-align:center;margin-bottom:.5rem}
+.coming-card .cc-icon{font-size:1.2rem;margin-bottom:.3rem}
+.coming-card h4{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.15rem}
+.coming-card p{font-size:.78rem;color:var(--muted)}
+.dash-footer{max-width:680px;margin:0 auto;padding:2rem 1.25rem;text-align:center;border-top:1px solid var(--border)}
+.dash-footer p{font-size:.62rem;color:var(--faint);line-height:1.6}
+body{-webkit-user-select:none;-moz-user-select:none;user-select:none}
+@media print{body{display:none!important}}
+</style>
+</head>
+<body oncontextmenu="return false">
+
+<div class="loading" id="loadingScreen"><div class="loading-spinner"></div><div class="loading-text">Loading your dashboard...</div></div>
+
+<div class="dashboard" id="dashboard">
+  <div class="dash-topbar">
+    <div class="dash-brand">CrackInDays</div>
+    <div class="dash-user">
+      <div class="dash-theme"><button onclick="setTheme('bright')" id="tb">☀️</button><button onclick="setTheme('warm')" id="tw" class="on">🌤️</button><button onclick="setTheme('dark')" id="td">🌙</button></div>
+      <div class="dash-badge">✓ PAID</div>
+      <div class="dash-name" id="userName"></div>
+      <button class="dash-logout" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+  <div class="dash-hero">
+    <h1>Welcome back, <span id="heroName">learner</span>!</h1>
+    <p>12 modules live. New modules added weekly. Complete them in order for best results.</p>
+  </div>
+  <div class="dash-progress"><div class="dp-track"><div class="dp-fill" id="dashProg" style="width:0%"></div></div><div class="dp-info"><span id="dashDone">0 of 12 modules completed</span><span id="dashPct">0%</span></div></div>
+
+  <!-- Paper 1: IE&IFS -->
+  <div class="dash-section">
+    <div class="ds-header"><div class="ds-dot" style="background:var(--amber)"></div><div class="ds-title">Paper 1 — IE&IFS</div><div class="ds-count">10 modules live</div></div>
+    <a class="mod-card" href="./m/k7x2p9.html" onclick="markDone('d1')"><div class="mc-side" style="background:var(--amber)"></div><div class="mc-body"><div class="mc-day">DAY 01</div><div class="mc-info"><div class="mc-title">Indian Economy Overview & Sectors</div><div class="mc-meta"><span class="mc-tag" style="background:var(--amber-s);color:var(--amber)">6 STEPS</span><span class="mc-time">~18 min</span></div></div><div class="mc-status open" id="st-d1">→</div></div></a>
+    <a class="mod-card" href="./m/r3m8w1.html" onclick="markDone('d2')"><div class="mc-side" style="background:var(--amber)"></div><div class="mc-body"><div class="mc-day">DAY 02</div><div class="mc-info"><div class="mc-title">Economic Planning & NITI Aayog</div><div class="mc-meta"><span class="mc-tag" style="background:var(--amber-s);color:var(--amber)">6 STEPS</span><span class="mc-time">~20 min</span></div></div><div class="mc-status open" id="st-d2">→</div></div></a>
+    <a class="mod-card" href="./m/v3n8t2.html" onclick="markDone('d3')"><div class="mc-side" style="background:var(--amber)"></div><div class="mc-body"><div class="mc-day">DAY 03</div><div class="mc-info"><div class="mc-title">Sectors of Indian Economy</div><div class="mc-meta"><span class="mc-tag" style="background:var(--amber-s);color:var(--amber)">6 STEPS</span><span class="mc-time">~18 min</span></div></div><div class="mc-status open" id="st-d3">→</div></div></a>
+    <a class="mod-card" href="./m/d4g6r1.html" onclick="markDone('d4')"><div class="mc-side" style="background:var(--amber)"></div><div class="mc-body"><div class="mc-day">DAY 04</div><div class="mc-info"><div class="mc-title">Priority Sector Lending & MSME</div><div class="mc-meta"><span class="mc-tag" style="background:var(--amber-s);color:var(--amber)">6 STEPS</span><span class="mc-time">~18 min</span></div></div><div class="mc-status open" id="st-d4">→</div></div></a>
+    <a class="mod-card" href="./m/e5h9w3.html" onclick="markDone('d5')"><div class="mc-side" style="background:var(--amber)"></div><div class="mc-body"><div class="mc-day">DAY 05</div><div class="mc-info"><div class="mc-title">Infrastructure & Social Infrastructure</div><div class="mc-meta"><span class="mc-tag" style="background:var(--amber-s);color:var(--amber)">6 STEPS</span><span class="mc-time">~20 min</span></div></div><div class="mc-status open" id="st-d5">→</div></div></a>
+    <a class="mod-card" href="./m/g6j2t8.html" onclick="markDone('d6')"><div class="mc-side" style="background:var(--amber)"></div><div class="mc-body"><div class="mc-day">DAY 06</div><div class="mc-info"><div class="mc-title">Globalisation, Reforms & International Orgs</div><div class="mc-meta"><span class="mc-tag" style="background:var(--amber-s);color:var(--amber)">6 STEPS</span><span class="mc-time">~18 min</span></div></div><div class="mc-status open" id="st-d6">→</div></div></a>
+    <a class="mod-card" href="./m/f7p4m1.html" onclick="markDone('d7')"><div class="mc-side" style="background:var(--amber)"></div><div class="mc-body"><div class="mc-day">DAY 07</div><div class="mc-info"><div class="mc-title">Foreign Trade Policy, FDI & FII</div><div class="mc-meta"><span class="mc-tag" style="background:var(--amber-s);color:var(--amber)">6 STEPS</span><span class="mc-time">~20 min</span></div></div><div class="mc-status open" id="st-d7">→</div></div></a>
+    <a class="mod-card" href="./m/m8q5n6.html" onclick="markDone('d8')"><div class="mc-side" style="background:var(--amber)"></div><div class="mc-body"><div class="mc-day">DAY 08</div><div class="mc-info"><div class="mc-title">Monetary & Fiscal Policy</div><div class="mc-meta"><span class="mc-tag" style="background:var(--amber-s);color:var(--amber)">6 STEPS</span><span class="mc-time">~18 min</span></div></div><div class="mc-status open" id="st-d8">→</div></div></a>
+    <a class="mod-card" href="./m/s9r7u2.html" onclick="markDone('d9')"><div class="mc-side" style="background:var(--amber)"></div><div class="mc-body"><div class="mc-day">DAY 09</div><div class="mc-info"><div class="mc-title">Money Supply, Inflation & National Income</div><div class="mc-meta"><span class="mc-tag" style="background:var(--amber-s);color:var(--amber)">6 STEPS</span><span class="mc-time">~18 min</span></div></div><div class="mc-status open" id="st-d9">→</div></div></a>
+    <a class="mod-card" href="./m/b10x3z.html" onclick="markDone('d10')"><div class="mc-side" style="background:var(--amber)"></div><div class="mc-body"><div class="mc-day">DAY 10</div><div class="mc-info"><div class="mc-title">Supply, Demand, Interest & Business Cycles</div><div class="mc-meta"><span class="mc-tag" style="background:var(--amber-s);color:var(--amber)">6 STEPS</span><span class="mc-time">~18 min</span></div></div><div class="mc-status open" id="st-d10">→</div></div></a>
+    <div class="coming-card"><div class="cc-icon">🚧</div><h4>More IE&IFS modules coming soon</h4><p>Banking Regulation, Financial Markets, Government Securities, and more.</p></div>
+  </div>
+
+  <!-- Paper 2: PPB -->
+  <div class="dash-section">
+    <div class="ds-header"><div class="ds-dot" style="background:var(--teal)"></div><div class="ds-title">Paper 2 — PPB</div><div class="ds-count">2 modules live</div></div>
+    <a class="mod-card" href="./m/c16y8a.html" onclick="markDone('d16')"><div class="mc-side" style="background:var(--teal)"></div><div class="mc-body"><div class="mc-day">DAY 16</div><div class="mc-info"><div class="mc-title">Banker-Customer Relationship</div><div class="mc-meta"><span class="mc-tag" style="background:var(--teal-bg);color:var(--teal)">6 STEPS</span><span class="mc-time">~18 min</span></div></div><div class="mc-status open" id="st-d16">→</div></div></a>
+    <a class="mod-card" href="./m/k17w4d.html" onclick="markDone('d17')"><div class="mc-side" style="background:var(--teal)"></div><div class="mc-body"><div class="mc-day">DAY 17</div><div class="mc-info"><div class="mc-title">KYC, AML & PMLA</div><div class="mc-meta"><span class="mc-tag" style="background:var(--teal-bg);color:var(--teal)">6 STEPS</span><span class="mc-time">~20 min</span></div></div><div class="mc-status open" id="st-d17">→</div></div></a>
+    <div class="coming-card"><div class="cc-icon">📋</div><h4>More PPB modules coming soon</h4><p>Account Types, Negotiable Instruments, Loans & Advances, Payment Systems, and more.</p></div>
+  </div>
+
+  <!-- Paper 3: AFM -->
+  <div class="dash-section">
+    <div class="ds-header"><div class="ds-dot" style="background:var(--blue)"></div><div class="ds-title">Paper 3 — AFM</div><div class="ds-count">Coming soon</div></div>
+    <div class="coming-card"><div class="cc-icon">🧮</div><h4>EMI Calculations, Ratio Analysis, Depreciation</h4><p>The most feared paper. Interactive calculators will make it click.</p></div>
+  </div>
+
+  <!-- Paper 4: RBWM -->
+  <div class="dash-section">
+    <div class="ds-header"><div class="ds-dot" style="background:var(--purple)"></div><div class="ds-title">Paper 4 — RBWM</div><div class="ds-count">Coming soon</div></div>
+    <div class="coming-card"><div class="cc-icon">🏦</div><h4>Retail Loans, Insurance, Wealth Management</h4><p>Most of this you know from branch work. We'll focus on exam-specific twists.</p></div>
+  </div>
+
+  <div class="dash-footer"><p>© 2026 CrackInDays.com. All content is original and copyrighted.<br>Unauthorized reproduction or distribution is prohibited under the Indian Copyright Act, 1957.<br>Access is non-transferable and tied to your account.</p></div>
+</div>
+
+<script>
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+function setTheme(t){document.documentElement.setAttribute('data-t',t);document.querySelectorAll('.dash-theme button').forEach(b=>b.classList.remove('on'));document.getElementById({bright:'tb',warm:'tw',dark:'td'}[t]).classList.add('on');try{localStorage.setItem('jaiib_theme',t)}catch(e){}}
+(function(){try{const t=localStorage.getItem('jaiib_theme');if(t)setTheme(t)}catch(e){}})();
+
+(async function(){
+  try{
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.replace('./auth.html?redirect='+encodeURIComponent(window.location.pathname));return}
+    const{data:profile}=await sb.from('profiles').select('has_paid,full_name').eq('id',session.user.id).single();
+    if(!profile||!profile.has_paid){window.location.replace('./auth.html?screen=payment');return}
+    const name=profile.full_name||session.user.user_metadata?.full_name||session.user.email?.split('@')[0]||'learner';
+    document.getElementById('heroName').textContent=name.split(' ')[0];
+    document.getElementById('userName').textContent=name.split(' ')[0];
+    document.getElementById('loadingScreen').style.display='none';
+    document.getElementById('dashboard').classList.add('show');
+    loadProgress();
+  }catch(err){console.error('Auth error:',err);window.location.replace('./auth.html')}
+})();
+
+async function doLogout(){await sb.auth.signOut();window.location.href='./index.html'}
+function markDone(id){try{const done=JSON.parse(localStorage.getItem('jaiib_done')||'[]');if(!done.includes(id)){done.push(id);localStorage.setItem('jaiib_done',JSON.stringify(done))}}catch(e){}}
+function loadProgress(){try{const done=JSON.parse(localStorage.getItem('jaiib_done')||'[]');const total=12;done.forEach(id=>{const st=document.getElementById('st-'+id);if(st){st.className='mc-status done';st.textContent='✓'}});const pct=Math.round((done.length/total)*100);document.getElementById('dashProg').style.width=pct+'%';document.getElementById('dashDone').textContent=done.length+' of '+total+' modules completed';document.getElementById('dashPct').textContent=pct+'%'}catch(e){}}
+document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['s','u','p'].includes(e.key.toLowerCase())){e.preventDefault();return false}if((e.ctrlKey||e.metaKey)&&e.shiftKey&&['i','j','c'].includes(e.key.toLowerCase())){e.preventDefault();return false}if(e.key==='F12'){e.preventDefault();return false}});
+</script>
+</body>
+</html>
