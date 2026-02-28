@@ -117,13 +117,13 @@ jobs:
               'anthropic-version': '2023-06-01',
             },
             body: JSON.stringify({
-              model: 'claude-sonnet-4-20250514',
-              max_tokens: 40000,
+              model: 'claude-haiku-4-5-20251001',
+              max_tokens: 8000,
               system: sysPrompt,
-              tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 20 }],
+              tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
               messages: [{
                 role: 'user',
-                content: 'Search Indian banking news for ' + today + '. Run these searches IN ORDER:\n\n1. HEADLINES FIRST: "Indian banking news today" — find what is making front pages right now\n2. BIG EVENTS: "bank fraud India this week" + "finance minister banks RBI governor statement today"\n3. POLICY: "RBI circular notification this week" + "RBI press release latest"\n4. OPERATIONS: "MCLR rate cut banks" + "MSME lending credit India" + "KCC kisan credit card"\n5. DIGITAL: "UPI digital payments fintech India latest"\n6. GOVERNMENT: "government banking scheme India latest" + "PSB reform EASE DFS"\n7. RRB SPECIFIC: "regional rural bank gramin bank" + "NABARD circular latest"\n8. MACRO: "CPI inflation India" + "credit deposit ratio RBI data"\n\nPRIORITY: If there is a major fraud (like IDFC First Bank 590cr), FM statement (like mis-selling warning), or RBI Governor comment in the news right now, those MUST be your top stories regardless of what else you find.\n\nAfter searching, do a FINAL CHECK: What are the top 3 biggest Indian banking stories trending right now? Make sure they are included.\n\nReturn 8-12 news + 2-3 circulars. Deep dives for top 2 must-reads only. Total JSON under 15000 chars. VALID JSON only — no text before or after.'
+                content: 'Find the most important Indian banking news for ' + today + '. Do exactly 2 web searches:\n\n1. "Indian banking news today RBI circular NABARD"\n2. "bank fraud India MSME lending fintech UPI latest"\n\nFrom results, pick 8-12 most impactful stories for an RRB branch manager. Include 2-3 circulars if any new ones exist. Skip routine announcements. Return VALID JSON only, under 12000 chars.'
               }],
             }),
           });
